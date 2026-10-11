@@ -1,0 +1,32 @@
+{
+  "1st-cross-street": {
+    "point": [6.9356802, 79.8509437],
+    "osmWay": "10548321",
+    "sourceName": "1st Cross Street"
+  },
+  "2nd-cross-street": {
+    "point": [6.9371978, 79.8519364],
+    "osmWay": "10548298",
+    "sourceName": "2nd Cross Street"
+  },
+  "sea-street": {
+    "point": [6.9396917, 79.8541192],
+    "osmWay": "34695077",
+    "sourceName": "Sea Street"
+  },
+  "maliban-street": {
+    "point": [6.9349289, 79.851054],
+    "osmWay": "10548310",
+    "sourceName": "Maliban Street"
+  },
+  "prince-street": {
+    "point": [6.9361052, 79.8522411],
+    "osmWay": "10548335",
+    "sourceName": "Prince Street"
+  },
+  "main-street": {
+    "point": [6.9374524, 79.8507327],
+    "osmWay": "625320319",
+    "sourceName": "Main Street"
+  }
+}

@@ -1,3 +1,4 @@
+import { StreetVisual } from "./street-visual";
 import Link from "next/link";
 import { DirectionsLink } from "./directions-link";
 import {
@@ -126,22 +127,25 @@ export function StreetCard({
         className="street-card-link"
         aria-label={`Explore ${street.name}`}
       >
-        <div className="street-meta">
-          <span>
-            <MapPin size={14} /> Pettah, Colombo
+        <StreetVisual slug={street.slug} name={street.name} />
+        <div className="street-card-body">
+          <div className="street-meta">
+            <span>
+              <MapPin size={14} /> Pettah, Colombo
+            </span>
+            <ArrowUpRight size={18} />
+          </div>
+          <Heading>{street.name}</Heading>
+          <p>{street.description}</p>
+          <div className="tags">
+            {street.categories.map(({ category }) => (
+              <span key={category.id}>{category.name}</span>
+            ))}
+          </div>
+          <span className="street-cta">
+            Explore street <ArrowRight size={16} />
           </span>
-          <ArrowUpRight size={18} />
         </div>
-        <Heading>{street.name}</Heading>
-        <p>{street.description}</p>
-        <div className="tags">
-          {street.categories.map(({ category }) => (
-            <span key={category.id}>{category.name}</span>
-          ))}
-        </div>
-        <span className="street-cta">
-          Explore street <ArrowRight size={16} />
-        </span>
       </Link>
       <div className="street-directions">
         <DirectionsLink destination={street.name} compact />

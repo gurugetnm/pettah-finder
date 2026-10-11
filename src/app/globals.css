@@ -1650,3 +1650,102 @@ p {
     grid-template-columns: 1fr;
   }
 }
+:root {
+  --map-road: #d7d1c4;
+  --map-surface: #eeece3;
+}
+.dark {
+  --map-road: #504e43;
+  --map-surface: #2e3029;
+}
+.street-card {
+  border-radius: 16px;
+}
+.street-card-link {
+  padding: 0;
+}
+.street-visual {
+  height: 158px;
+  position: relative;
+  background: var(--map-surface);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.street-visual svg {
+  width: 100%;
+  height: 100%;
+}
+.street-visual-label {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--muted-foreground);
+}
+.visual-placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 21px;
+  color: var(--muted-foreground);
+}
+.street-card-body {
+  padding: 20px 22px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.street-meta {
+  margin-bottom: 12px;
+}
+.street-meta > span {
+  font-size: 12px;
+}
+.street-card-body > p {
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.street-card :is(h2, h3) {
+  font-size: 22px;
+}
+.tags span {
+  font-size: 12px;
+  padding: 5px 9px;
+}
+.street-cta {
+  min-height: 54px;
+  font-size: 14px;
+  padding-top: 14px;
+}
+.street-directions {
+  right: 22px;
+  bottom: 10px;
+}
+.street-directions .text-link {
+  font-size: 13px;
+}
+.shop-card {
+  border-radius: 16px;
+}
+.shop-card > p {
+  font-size: 14px;
+}
+@media (max-width: 767px) {
+  .street-card-link {
+    padding: 0;
+  }
+  .street-visual {
+    height: 150px;
+  }
+  .street-card-body {
+    padding-inline: 20px;
+  }
+  .street-directions {
+    right: 20px;
+    bottom: 9px;
+  }
+}

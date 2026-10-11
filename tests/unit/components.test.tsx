@@ -1,3 +1,4 @@
+import { ShopContact } from "@/components/discovery/shop-contact";
 import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -57,6 +58,17 @@ describe("discovery components", () => {
       "/streets/1st-cross-street",
     );
     expect(screen.getByText("Mobile Accessories")).toBeVisible();
+  });
+  it("makes recorded valid shop contact details callable", () => {
+    render(<ShopContact phone="+1 (202) 555-0100" />);
+    expect(
+      screen.getByRole("link", { name: "Call shop at +1 (202) 555-0100" }),
+    ).toHaveAttribute("href", "tel:+12025550100");
+  });
+  it("shows an honest state when a contact number is unavailable", () => {
+    render(<ShopContact phone={null} />);
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByText("No contact phone recorded.")).toBeVisible();
   });
   it("offers useful no-results guidance", () => {
     render(<EmptySearch query="unknown" />);

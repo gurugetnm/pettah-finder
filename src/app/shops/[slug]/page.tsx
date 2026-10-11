@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShopContact } from "@/components/discovery/shop-contact";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { shops } from "@/features/discovery/shops";
@@ -107,6 +108,7 @@ export default async function ShopDetail({
         </div>
         <aside className="detail-panel location-panel">
           <h2>Visit this shop</h2>
+          <ShopContact phone={shop.contactPhone} />
           <Link className="text-link" href={`/streets/${shop.street.slug}`}>
             {shop.street.name}
           </Link>

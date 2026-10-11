@@ -7,6 +7,7 @@ import {
 import { shopFilterSchema } from "@/lib/validations/filters";
 import { testDatabaseUrl } from "@/lib/validations/test-database";
 import { directionsUrl } from "@/lib/utils/maps";
+import { phoneHref } from "@/lib/validations/contact";
 import { cn } from "@/lib/utils/cn";
 describe("search input", () => {
   it("normalizes Unicode, repeated spaces and case", () => {
@@ -87,4 +88,23 @@ it("encodes directions without inventing coordinates", () => {
 });
 it("merges Tailwind overrides", () => {
   expect(cn("px-2", false, "px-4")).toBe("px-4");
+});
+
+describe("shop contact URLs", () => {
+  it("normalizes a formatted test phone number", () => {
+    expect(phoneHref(" +1 (202) 555-0100 ")).toBe("tel:+12025550100");
+  });
+  it("does not make missing malformed or URI-like values callable", () => {
+    for (const value of [
+      null,
+      "",
+      "12",
+      "1234;ext=42",
+      "javascript:alert(1)",
+      "tel:+12025550100",
+      "1234567890123456",
+      "1234567\n?subject=test",
+    ])
+      expect(phoneHref(value)).toBeNull();
+  });
 });

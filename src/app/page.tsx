@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import LoadingFeedback from "@/components/layout/loading-feedback";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -13,7 +15,7 @@ import { MarketIllustration } from "@/components/discovery/market-illustration";
 import { SearchForm } from "@/components/search/search-form";
 import { Button } from "@/components/ui/button";
 export const dynamic = "force-dynamic";
-export default async function Home() {
+async function HomeContent() {
   const [categories, streets] = await Promise.all([
     discovery().categories(),
     discovery().streets(),
@@ -154,5 +156,13 @@ export default async function Home() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<LoadingFeedback />}>
+      <HomeContent />
+    </Suspense>
   );
 }

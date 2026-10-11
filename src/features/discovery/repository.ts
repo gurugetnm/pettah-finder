@@ -40,7 +40,7 @@ export function discoveryRepository(db: PrismaClient) {
               publicationStatus: "PUBLISHED",
               verificationStatus: "VERIFIED",
             },
-            select: { id: true, name: true, description: true },
+            select: { id: true, slug: true, name: true, description: true },
             orderBy: { name: "asc" },
             take: 30,
           },
@@ -73,7 +73,7 @@ export function discoveryRepository(db: PrismaClient) {
           },
         ],
       };
-      const [categories, streets] = await db.$transaction([
+      const [categories, streets] = await Promise.all([
         db.category.findMany({
           where: matchedCategory,
           orderBy: [{ name: "asc" }, { id: "asc" }],

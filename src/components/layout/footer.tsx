@@ -23,6 +23,9 @@ export function Footer() {
           <Link href="/categories">
             Product categories <ArrowUpRight size={16} />
           </Link>
+          <Link href="/shops">
+            Shop directory <ArrowUpRight size={16} />
+          </Link>
           <Link href="/search">
             Find a product <ArrowUpRight size={16} />
           </Link>

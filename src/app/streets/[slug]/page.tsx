@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DirectionsLink } from "@/components/discovery/directions-link";
 import { notFound } from "next/navigation";
 import { MapPin, Info } from "lucide-react";
 import { cache } from "react";
@@ -86,7 +87,9 @@ export default async function StreetDetail({
               <ul>
                 {street.shops.map((shop) => (
                   <li key={shop.id}>
-                    <h3>{shop.name}</h3>
+                    <h3>
+                      <Link href={`/shops/${shop.slug}`}>{shop.name}</Link>
+                    </h3>
                     <p>{shop.description}</p>
                   </li>
                 ))}
@@ -108,9 +111,10 @@ export default async function StreetDetail({
             <h2>Finding your way</h2>
             <p>{street.locationDescription}</p>
             <p className="mt-4">
-              A precise map pin will appear once the location has been verified.
-              Check local signs and ask for directions when you arrive.
+              Google Maps resolves the street name. Confirm the destination
+              before you travel; we have not verified a precise map pin.
             </p>
+            <DirectionsLink destination={street.name} />
           </section>
           <section className="detail-panel">
             <span className="eyebrow">BEFORE YOU GO</span>

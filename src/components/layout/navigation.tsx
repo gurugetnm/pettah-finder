@@ -21,6 +21,7 @@ const links = [
   ["/search", "Search"],
   ["/streets", "Explore Streets"],
   ["/categories", "Categories"],
+  ["/shops", "Shops"],
 ] as const;
 function ThemeToggle() {
   const { setTheme } = useTheme();

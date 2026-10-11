@@ -1,0 +1,122 @@
+export const categories = [
+  [
+    "electronics",
+    "Electronics",
+    "Devices, components and everyday tech.",
+    "cpu",
+  ],
+  [
+    "mobile-accessories",
+    "Mobile Accessories",
+    "Chargers, cases and phone essentials.",
+    "smartphone",
+  ],
+  [
+    "fabrics-textiles",
+    "Fabrics & Textiles",
+    "Materials for your next creation.",
+    "scissors",
+  ],
+  ["clothing", "Clothing", "Everyday wear and wardrobe essentials.", "shirt"],
+  ["jewellery", "Jewellery", "Discover ornaments and accessories.", "gem"],
+  [
+    "stationery",
+    "Stationery",
+    "Supplies for school, work and creativity.",
+    "pencil",
+  ],
+  ["lighting", "Lighting", "Bulbs, fittings and lighting supplies.", "lamp"],
+  ["toys", "Toys", "Playtime finds for curious minds.", "toy"],
+  [
+    "household-goods",
+    "Household Goods",
+    "Useful essentials for your home.",
+    "house",
+  ],
+  ["spices", "Spices", "Pantry staples and aromatic ingredients.", "leaf"],
+  ["bags", "Bags", "Carry your everyday essentials.", "bag"],
+  ["footwear", "Footwear", "Shoes, sandals and everyday styles.", "footprints"],
+] as const;
+export const streets = [
+  [
+    "1st-cross-street",
+    "1st Cross Street",
+    "A starting point for electronics, phone essentials and lighting supplies.",
+    ["electronics", "mobile-accessories", "lighting"],
+  ],
+  [
+    "2nd-cross-street",
+    "2nd Cross Street",
+    "Explore textiles, everyday clothing and accessories in the heart of Pettah.",
+    ["fabrics-textiles", "clothing", "bags", "footwear"],
+  ],
+  [
+    "sea-street",
+    "Sea Street",
+    "A familiar shopping street associated with jewellery and ornaments.",
+    ["jewellery"],
+  ],
+  [
+    "maliban-street",
+    "Maliban Street",
+    "Browse ideas for stationery, paper goods and school supplies.",
+    ["stationery"],
+  ],
+  [
+    "prince-street",
+    "Prince Street",
+    "Discover a mix of electronics, toys and useful household essentials.",
+    ["electronics", "toys", "household-goods"],
+  ],
+  [
+    "main-street",
+    "Main Street",
+    "Explore clothing, bags, footwear and pantry shopping possibilities.",
+    ["clothing", "bags", "footwear", "spices"],
+  ],
+] as const;
+export const products = [
+  [
+    "phone-charger",
+    "Phone charger",
+    "mobile-accessories",
+    ["charger", "chargers", "phone charger", "usb charger", "charging cable"],
+  ],
+  [
+    "phone-case",
+    "Phone case",
+    "mobile-accessories",
+    ["phone cover", "mobile cover", "phone cases"],
+  ],
+  [
+    "fabric",
+    "Fabric",
+    "fabrics-textiles",
+    ["fabrics", "cloth", "textiles", "material"],
+  ],
+  [
+    "notebook",
+    "Notebook",
+    "stationery",
+    ["notebooks", "exercise book", "school supplies"],
+  ],
+  ["light-bulb", "Light bulb", "lighting", ["bulb", "bulbs", "led", "lights"]],
+  ["necklace", "Necklace", "jewellery", ["necklaces", "jewelry", "jewellery"]],
+  ["shirt", "Shirt", "clothing", ["shirts", "clothes", "clothing"]],
+  ["toy", "Toy", "toys", ["toys", "games"]],
+  ["bag", "Bag", "bags", ["bags", "backpack", "school bag"]],
+  ["shoes", "Shoes", "footwear", ["shoe", "sandals", "footwear"]],
+  ["spice", "Spice", "spices", ["spices", "cinnamon", "pepper"]],
+  [
+    "kitchenware",
+    "Kitchenware",
+    "household-goods",
+    ["utensils", "household", "pots"],
+  ],
+  [
+    "electronic-component",
+    "Electronic component",
+    "electronics",
+    ["components", "electronics", "circuit"],
+  ],
+] as const;

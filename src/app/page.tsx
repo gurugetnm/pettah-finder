@@ -1,69 +1,158 @@
-import Image from "next/image";
-
-export default function Home() {
+import Link from "next/link";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  MapPin,
+  Compass,
+  ShoppingBag,
+  Info,
+} from "lucide-react";
+import { discovery } from "@/features/discovery/repository";
+import { CategoryCard, StreetGrid } from "@/components/discovery/cards";
+import { MarketIllustration } from "@/components/discovery/market-illustration";
+import { SearchForm } from "@/components/search/search-form";
+import { Button } from "@/components/ui/button";
+export const dynamic = "force-dynamic";
+export default async function Home() {
+  const [categories, streets] = await Promise.all([
+    discovery().categories(),
+    discovery().streets(),
+  ]);
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <div className="shell">
+        <section className="hero">
+          <div className="hero-copy">
+            <span className="location-pill">
+              <MapPin size={13} /> PETTAH, COLOMBO
+            </span>
+            <h1>
+              Find what you
+              <br />
+              need in <span>Pettah.</span>
+            </h1>
+            <p>
+              Discover shopping streets, explore product categories, and find
+              your way around Colombo&apos;s busiest marketplace.
+            </p>
+            <SearchForm />
+            <div className="suggestions">
+              <span>Popular searches</span>
+              {[
+                "Phone accessories",
+                "Fabrics",
+                "Jewellery",
+                "Stationery",
+                "Lighting",
+              ].map((q) => (
+                <Link
+                  key={q}
+                  href={`/search?q=${encodeURIComponent(q === "Phone accessories" ? "mobile accessories" : q)}`}
+                >
+                  {q}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <MarketIllustration />
+        </section>
+        <div className="discovery-strip">
+          <div>
+            <Compass size={17} /> A little local knowledge goes a long way
+          </div>
+          <div>
+            <MapPin size={17} /> Explore street by street
+          </div>
+          <div>
+            <ShoppingBag size={17} /> Find your shopping starting point
+          </div>
+        </div>
+        <section className="section">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">START WITH WHAT YOU NEED</span>
+              <h2>Explore by category</h2>
+              <p>From everyday essentials to your next great find.</p>
+            </div>
+            <Link href="/categories" className="text-link">
+              All categories <ArrowUpRight size={17} />
+            </Link>
+          </div>
+          <div className="category-grid">
+            {categories.map((category) => (
+              <CategoryCard category={category} key={category.id} />
+            ))}
+          </div>
+          {!categories.length && (
+            <p>Categories will appear once the guide is populated.</p>
+          )}
+        </section>
+      </div>
+      <section className="section streets-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">GET TO KNOW THE NEIGHBOURHOOD</span>
+              <h2>Popular shopping streets</h2>
+              <p>A few familiar names to start your Pettah adventure.</p>
+            </div>
+            <Link href="/streets" className="text-link">
+              Explore all streets <ArrowUpRight size={17} />
+            </Link>
+          </div>
+          <StreetGrid streets={streets.slice(0, 3)} />
+          {!streets.length && <p>Street listings are coming soon.</p>}
+          <p className="accuracy-note">
+            <Info size={16} /> Street categories are preliminary guides, not
+            guarantees of availability.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+      <section className="shell section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">LESS GUESSWORK. MORE DISCOVERY.</span>
+            <h2>Your next find, in three steps</h2>
+          </div>
         </div>
-      </main>
-    </div>
+        <div className="how-grid">
+          {[
+            [
+              "Search for a product",
+              "Tell us what you’re looking for, from phone chargers to fabrics.",
+            ],
+            [
+              "Find a relevant street",
+              "Discover streets associated with your shopping category.",
+            ],
+            [
+              "Explore your options",
+              "Get to know the area and confirm availability when you visit.",
+            ],
+          ].map(([title, text], i) => (
+            <div className="how-step" key={title}>
+              <span className="how-number">0{i + 1}</span>
+              <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <div className="shell">
+        <div className="cta-panel">
+          <div>
+            <h2>A busy marketplace. A clearer starting point.</h2>
+            <p>Take a look around before you head out.</p>
+          </div>
+          <Button asChild>
+            <Link href="/streets">
+              Discover the streets <ArrowRight size={17} />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }

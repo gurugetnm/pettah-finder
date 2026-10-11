@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+}
+enum VerificationStatus {
+  UNVERIFIED
+  VERIFIED
+}
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+}
+model Street {
+  id                  String @id
+  name                String
+  slug                String @unique
+  description         String
+  locationDescription String
+  latitude            Decimal? @db.Decimal(9, 6)
+  longitude           Decimal? @db.Decimal(9, 6)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  categories          StreetCategory[]
+  shops               Shop[]
+  @@index([name])
+}
+model Category {
+  id          String @id
+  name        String
+  slug        String @unique
+  description String
+  iconKey     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  streets     StreetCategory[]
+  shops       ShopCategory[]
+  products    Product[]
+  @@index([name])
+}
+model Product {
+  id         String @id
+  name       String
+  slug       String @unique
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  aliases    ProductAlias[]
+  shops      ShopProduct[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([categoryId])
+  @@index([name])
+}
+model ProductAlias {
+  id              String @id
+  productId       String
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  alias           String
+  normalizedAlias String
+  @@unique([productId, normalizedAlias])
+  @@index([normalizedAlias])
+}
+model StreetCategory {
+  streetId   String
+  categoryId String
+  street     Street @relation(fields: [streetId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  @@id([streetId, categoryId])
+  @@index([categoryId])
+}
+model Shop {
+  id                 String @id @default(cuid())
+  name               String
+  slug               String @unique
+  description        String?
+  streetId           String
+  street             Street @relation(fields: [streetId], references: [id], onDelete: Restrict)
+  latitude           Decimal? @db.Decimal(9, 6)
+  longitude          Decimal? @db.Decimal(9, 6)
+  contactPhone       String?
+  wholesaleAvailable Boolean?
+  retailAvailable    Boolean?
+  verificationStatus VerificationStatus @default(UNVERIFIED)
+  publicationStatus  PublicationStatus @default(DRAFT)
+  lastVerifiedAt     DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  categories         ShopCategory[]
+  products           ShopProduct[]
+  @@index([streetId, publicationStatus])
+}
+model ShopCategory {
+  shopId     String
+  categoryId String
+  shop       Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  @@id([shopId, categoryId])
+  @@index([categoryId])
+}
+model ShopProduct {
+  shopId    String
+  productId String
+  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  @@id([shopId, productId])
+  @@index([productId])
+}

@@ -18,12 +18,12 @@ export function SearchForm({
         name="q"
         type="search"
         defaultValue={defaultValue}
-        placeholder="Search products or streets…"
+        placeholder="Search products, shops or streets..."
         maxLength={80}
         autoComplete="off"
       />
       <Button type="submit" aria-label="Search Pettah">
-        <span>Search</span>
+        <span>Find it</span>
         <ArrowRight size={18} />
       </Button>
     </form>

@@ -18,8 +18,8 @@ export function ThemeRoot({ children }: { children: React.ReactNode }) {
   );
 }
 const links = [
-  ["/search", "Search"],
-  ["/streets", "Explore Streets"],
+  ["/", "Explore"],
+  ["/streets", "Streets"],
   ["/categories", "Categories"],
   ["/shops", "Shops"],
 ] as const;
@@ -103,17 +103,19 @@ export function Header() {
           </span>
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
-          {links
-            .filter(([href]) => href === "/streets" || href === "/categories")
-            .map(([href, text]) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={path.startsWith(href) ? "page" : undefined}
-              >
-                {text}
-              </Link>
-            ))}
+          {links.map(([href, text]) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={
+                (href === "/" ? path === "/" : path.startsWith(href))
+                  ? "page"
+                  : undefined
+              }
+            >
+              {text}
+            </Link>
+          ))}
         </nav>
         <div className="header-actions">
           <ThemeToggle />
@@ -141,7 +143,11 @@ export function Header() {
               href={href}
               key={href}
               onClick={() => setOpen(false)}
-              aria-current={path.startsWith(href) ? "page" : undefined}
+              aria-current={
+                (href === "/" ? path === "/" : path.startsWith(href))
+                  ? "page"
+                  : undefined
+              }
             >
               {text}
             </Link>

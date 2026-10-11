@@ -24,10 +24,12 @@ async function SearchContent({
 }) {
   const result = parseQuery((await searchParams).q);
   const query = result.success ? result.data : "";
-  const matchedShops = query ? await shops().list({ q: query }) : [];
-  const data = query
-    ? await discovery().search(query)
-    : { streets: [], categories: [] };
+  const [matchedShops, data] = await Promise.all([
+    query ? shops().list({ q: query }) : Promise.resolve([]),
+    query
+      ? discovery().search(query)
+      : Promise.resolve({ streets: [], categories: [] }),
+  ]);
   return (
     <div className="shell content-page">
       <div className="page-heading">
@@ -47,8 +49,14 @@ async function SearchContent({
         <EmptySearch query={query} />
       ) : (
         <>
-          {data.categories.length > 0 && (
+          {data.streets.length > 0 && (
             <section>
+              <h2 className="results-heading">Streets to explore</h2>
+              <StreetGrid streets={data.streets} />
+            </section>
+          )}
+          {data.categories.length > 0 && (
+            <section className="search-categories">
               <h2 className="results-heading">Matching categories</h2>
               <div className="category-grid">
                 {data.categories.map((c) => (
@@ -57,18 +65,12 @@ async function SearchContent({
               </div>
             </section>
           )}
-          {data.streets.length > 0 && (
-            <section>
-              <h2 className="results-heading">Streets to explore</h2>
-              <StreetGrid streets={data.streets} />
-            </section>
-          )}
           {matchedShops.length > 0 && (
             <section>
               <h2 className="results-heading">Matching shops</h2>
               <div className="street-grid">
                 {matchedShops.map((shop) => (
-                  <ShopCard key={shop.id} shop={shop} />
+                  <ShopCard key={shop.id} shop={shop} headingLevel={3} />
                 ))}
               </div>
             </section>

@@ -18,7 +18,7 @@ export function SearchForm({
         name="q"
         type="search"
         defaultValue={defaultValue}
-        placeholder="Try ‘phone charger’ or ‘fabrics’"
+        placeholder="Search products or streets…"
         maxLength={80}
         autoComplete="off"
       />

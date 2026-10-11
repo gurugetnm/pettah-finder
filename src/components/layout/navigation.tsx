@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Menu, X, Sun, Moon, Monitor } from "lucide-react";
+import { MapPin, Menu, X, Sun, Moon, Monitor, SunMoon } from "lucide-react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
@@ -31,38 +31,53 @@ function ThemeToggle() {
     () => true,
     () => false,
   );
+  const details = useRef<HTMLDetailsElement>(null);
   return (
-    <div className="theme-switch" role="group" aria-label="Colour theme">
-      <Button
-        variant="ghost"
-        className="px-3"
-        aria-label="Use light theme"
-        aria-pressed={hydrated && theme === "light"}
-        onClick={() => setTheme("light")}
-      >
-        <Sun size={18} />
-      </Button>
-      <Button
-        variant="ghost"
-        className="px-3"
-        aria-label="Use dark theme"
-        aria-pressed={hydrated && theme === "dark"}
-        onClick={() => setTheme("dark")}
-      >
-        <Moon size={18} />
-      </Button>
-      <Button
-        variant="ghost"
-        className="px-3"
-        aria-label="Use system theme"
-        aria-pressed={hydrated && theme === "system"}
-        onClick={() => setTheme("system")}
-      >
-        <Monitor size={18} />
-      </Button>
-    </div>
+    <details
+      ref={details}
+      className="theme-switch"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && details.current) {
+          details.current.open = false;
+          details.current.querySelector("summary")?.focus();
+        }
+      }}
+    >
+      <summary role="button" aria-label="Change colour theme">
+        <SunMoon size={20} />
+      </summary>
+      <div className="theme-popover" role="group" aria-label="Colour theme">
+        {[
+          { choice: "light", Icon: Sun },
+          { choice: "dark", Icon: Moon },
+          { choice: "system", Icon: Monitor },
+        ].map(({ choice, Icon }) => {
+          return (
+            <Button
+              variant="ghost"
+              key={choice}
+              aria-label={`Use ${choice} theme`}
+              aria-pressed={hydrated && theme === choice}
+              onClick={() => {
+                setTheme(choice);
+                if (details.current) {
+                  details.current.open = false;
+                  details.current.querySelector("summary")?.focus();
+                }
+              }}
+            >
+              <Icon size={18} />
+              {choice === "system"
+                ? "System preference"
+                : `${choice[0].toUpperCase()}${choice.slice(1)} mode`}
+            </Button>
+          );
+        })}
+      </div>
+    </details>
   );
 }
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
@@ -84,20 +99,21 @@ export function Header() {
             <MapPin size={23} strokeWidth={2.4} />
           </span>
           <span>
-            Pettah<span className="text-primary">Finder</span>
-            <small>YOUR MARKETPLACE COMPASS</small>
+            Pettah Finder<span className="brand-dot">.</span>
           </span>
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
-          {links.map(([href, text]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={path.startsWith(href) ? "page" : undefined}
-            >
-              {text}
-            </Link>
-          ))}
+          {links
+            .filter(([href]) => href === "/streets" || href === "/categories")
+            .map(([href, text]) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={path.startsWith(href) ? "page" : undefined}
+              >
+                {text}
+              </Link>
+            ))}
         </nav>
         <div className="header-actions">
           <ThemeToggle />

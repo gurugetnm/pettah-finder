@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 test("product discovery journey", async ({ page }) => {
   await page.goto("/");
@@ -35,7 +36,7 @@ test("categories, filters, empty states and missing routes", async ({
     .filter({ has: page.getByRole("heading", { name: "Mobile Accessories" }) })
     .click();
   await expect(page).toHaveURL(/category=mobile-accessories/);
-  await expect(page.getByRole("heading", { level: 3 })).toHaveCount(1);
+  await expect(page.getByRole("heading", { level: 2 })).toHaveCount(1);
   await page.goto("/shops");
   await expect(page.getByText("No verified shops to show yet.")).toBeVisible();
   await page.getByRole("button", { name: "Find shops" }).click();
@@ -65,6 +66,7 @@ test("mobile navigation and theme persistence", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await expect(page.locator("html")).toHaveClass(/dark/);
+  await page.getByRole("button", { name: "Change colour theme" }).click();
   await page.getByRole("button", { name: "Use light theme" }).click();
   await expect(page.locator("html")).not.toHaveClass(/dark/);
   await page.reload();
@@ -167,6 +169,49 @@ test("public shop details and visibility rules with isolated fixtures", async ({
     await expect(
       page.getByRole("link", { name: /Google Maps directions/ }),
     ).toHaveAttribute("href", /destination=TEST/);
+    for (const width of [320, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const path of [
+        "/shops?q=charger",
+        "/shops/e2e-test-fixture-public",
+      ]) {
+        await page.goto(path);
+        await page.getByRole("heading", { level: 1 }).waitFor();
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth > window.innerWidth,
+          ),
+          `${path} at ${width}px`,
+        ).toBe(false);
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const theme of ["light", "dark"]) {
+      await page.getByRole("button", { name: "Change colour theme" }).click();
+      await page.getByRole("button", { name: `Use ${theme} theme` }).click();
+      for (const path of [
+        "/shops?q=charger",
+        "/shops/e2e-test-fixture-public",
+      ]) {
+        await page.goto(path);
+        await page.getByRole("heading", { level: 1 }).waitFor();
+        const result = await new AxeBuilder({ page })
+          .withTags([
+            "wcag2a",
+            "wcag2aa",
+            "wcag21aa",
+            "wcag22aa",
+            "best-practice",
+          ])
+          .analyze();
+        expect(result.violations, `${path} in ${theme} mode`).toEqual([]);
+      }
+      await page.evaluate(() => document.fonts.ready);
+      await page.screenshot({
+        path: `.local/screenshots/shop-390-${theme}.png`,
+        fullPage: true,
+      });
+    }
     for (const slug of fixtureIds.slice(1))
       expect((await page.goto(`/shops/${slug}`))?.status()).toBe(404);
     await page.goto("/search?q=charger");
@@ -196,10 +241,86 @@ test("visual review captures", async ({ page }) => {
   ] as const) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
+    await page.getByRole("button", { name: "Change colour theme" }).click();
     await page.getByRole("button", { name: `Use ${theme} theme` }).click();
-    await page.screenshot({
-      path: `.local/screenshots/home-${width}-${theme}.png`,
-      fullPage: true,
-    });
+    for (const [path, name] of [
+      ["/", "home"],
+      ["/search?q=charger", "search"],
+      ["/streets/2nd-cross-street", "street"],
+    ]) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await page.screenshot({
+        path: `.local/screenshots/${name}-${width}-${theme}.png`,
+        fullPage: true,
+      });
+    }
   }
+});
+
+test("public pages pass automated accessibility checks in both themes", async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const theme of ["light", "dark"]) {
+    await page.goto("/");
+    await page.getByRole("heading", { level: 1 }).waitFor();
+    await page.getByRole("button", { name: "Change colour theme" }).click();
+    await page.getByRole("button", { name: `Use ${theme} theme` }).click();
+    for (const path of [
+      "/",
+      "/categories",
+      "/streets",
+      "/streets/2nd-cross-street",
+      "/shops",
+      "/search?q=charger",
+      "/search?q=zzzzunknown",
+      "/missing-route",
+    ]) {
+      await page.goto(path);
+      await page.getByRole("heading", { level: 1 }).waitFor();
+      const result = await new AxeBuilder({ page })
+        .withTags([
+          "wcag2a",
+          "wcag2aa",
+          "wcag21aa",
+          "wcag22aa",
+          "best-practice",
+        ])
+        .analyze();
+      expect(result.violations, `${path} in ${theme} mode`).toEqual([]);
+    }
+  }
+});
+
+test("keyboard skip link and menu dismissal restore useful focus", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.goto("/");
+  await page.getByRole("heading", { level: 1 }).waitFor();
+  await page.keyboard.press("Tab");
+  await expect(
+    page.getByRole("link", { name: "Skip to content" }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#main-content")).toBeFocused();
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Open navigation" }),
+  ).toBeFocused();
+  await expect(
+    page.getByRole("navigation", { name: "Mobile navigation" }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Change colour theme" }).click();
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Change colour theme" }),
+  ).toBeFocused();
+  await expect(
+    page.getByRole("group", { name: "Colour theme" }),
+  ).not.toBeVisible();
 });

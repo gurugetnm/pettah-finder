@@ -45,6 +45,9 @@ export default async function StreetDetail({
         <span className="eyebrow">PETTAH, COLOMBO</span>
         <h1>{street.name}</h1>
         <p>{street.description}</p>
+        <div className="detail-actions">
+          <DirectionsLink destination={street.name} />
+        </div>
       </div>
       <div className="detail-grid">
         <div>
@@ -114,7 +117,6 @@ export default async function StreetDetail({
               Google Maps resolves the street name. Confirm the destination
               before you travel; we have not verified a precise map pin.
             </p>
-            <DirectionsLink destination={street.name} />
           </section>
           <section className="detail-panel">
             <span className="eyebrow">BEFORE YOU GO</span>

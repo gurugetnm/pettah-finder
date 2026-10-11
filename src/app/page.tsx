@@ -3,17 +3,15 @@ import LoadingFeedback from "@/components/layout/loading-feedback";
 import Link from "next/link";
 import {
   ArrowRight,
-  ArrowUpRight,
   MapPin,
-  Compass,
-  ShoppingBag,
   Info,
+  Search,
+  Route,
+  ShoppingBag,
 } from "lucide-react";
 import { discovery } from "@/features/discovery/repository";
 import { CategoryCard, StreetGrid } from "@/components/discovery/cards";
-import { MarketIllustration } from "@/components/discovery/market-illustration";
 import { SearchForm } from "@/components/search/search-form";
-import { Button } from "@/components/ui/button";
 export const dynamic = "force-dynamic";
 async function HomeContent() {
   const [categories, streets] = await Promise.all([
@@ -23,61 +21,47 @@ async function HomeContent() {
   return (
     <>
       <div className="shell">
-        <section className="hero">
-          <div className="hero-copy">
-            <span className="location-pill">
-              <MapPin size={13} /> PETTAH, COLOMBO
-            </span>
-            <h1>
-              Find what you
-              <br />
-              need in <span>Pettah.</span>
-            </h1>
-            <p>
-              Discover shopping streets, explore product categories, and find
-              your way around Colombo&apos;s busiest marketplace.
-            </p>
-            <SearchForm />
-            <div className="suggestions">
-              <span>Popular searches</span>
-              {[
-                "Phone accessories",
-                "Fabrics",
-                "Jewellery",
-                "Stationery",
-                "Lighting",
-              ].map((q) => (
-                <Link
-                  key={q}
-                  href={`/search?q=${encodeURIComponent(q === "Phone accessories" ? "mobile accessories" : q)}`}
-                >
-                  {q}
-                </Link>
-              ))}
-            </div>
+        <section className="hero" aria-labelledby="hero-title">
+          <span className="location-pill">
+            <MapPin size={14} /> Your local guide to Pettah, Colombo
+          </span>
+          <h1 id="hero-title">
+            Find what you need
+            <br />
+            in <span>Pettah.</span>
+          </h1>
+          <p>
+            The right streets. The right discoveries.
+            <br className="desktop-break" /> A simpler way to explore Colombo’s
+            busiest marketplace.
+          </p>
+          <SearchForm />
+          <div className="suggestions">
+            <span>Try searching</span>
+            {[
+              ["Phone accessories", "mobile accessories"],
+              ["Fabrics", "fabrics"],
+              ["Jewellery", "jewellery"],
+              ["Stationery", "stationery"],
+            ].map(([label, q]) => (
+              <Link href={`/search?q=${encodeURIComponent(q)}`} key={q}>
+                {label}
+                <ArrowRight size={12} />
+              </Link>
+            ))}
           </div>
-          <MarketIllustration />
         </section>
-        <div className="discovery-strip">
-          <div>
-            <Compass size={17} /> A little local knowledge goes a long way
-          </div>
-          <div>
-            <MapPin size={17} /> Explore street by street
-          </div>
-          <div>
-            <ShoppingBag size={17} /> Find your shopping starting point
-          </div>
-        </div>
-        <section className="section">
+        <section
+          className="section category-section"
+          aria-labelledby="categories-title"
+        >
           <div className="section-heading">
             <div>
-              <span className="eyebrow">START WITH WHAT YOU NEED</span>
-              <h2>Explore by category</h2>
-              <p>From everyday essentials to your next great find.</p>
+              <span className="eyebrow">WHAT’S ON YOUR LIST?</span>
+              <h2 id="categories-title">A little of everything.</h2>
             </div>
             <Link href="/categories" className="text-link">
-              All categories <ArrowUpRight size={17} />
+              All categories <ArrowRight size={16} />
             </Link>
           </div>
           <div className="category-grid">
@@ -89,76 +73,75 @@ async function HomeContent() {
             <p>Categories will appear once the guide is populated.</p>
           )}
         </section>
-      </div>
-      <section className="section streets-section">
-        <div className="shell">
+        <section
+          className="section streets-section"
+          aria-labelledby="streets-title"
+        >
           <div className="section-heading">
             <div>
-              <span className="eyebrow">GET TO KNOW THE NEIGHBOURHOOD</span>
-              <h2>Popular shopping streets</h2>
-              <p>A few familiar names to start your Pettah adventure.</p>
+              <span className="eyebrow">KNOW WHERE TO GO</span>
+              <h2 id="streets-title">Start with a street.</h2>
+              <p>
+                Different streets, different finds. Get to know the
+                neighbourhood.
+              </p>
             </div>
             <Link href="/streets" className="text-link">
-              Explore all streets <ArrowUpRight size={17} />
+              Explore all streets <ArrowRight size={16} />
             </Link>
           </div>
           <StreetGrid streets={streets.slice(0, 3)} />
           {!streets.length && <p>Street listings are coming soon.</p>}
           <p className="accuracy-note">
-            <Info size={16} /> Street categories are preliminary guides, not
-            guarantees of availability.
+            <Info size={15} /> A starting point for exploring. Category
+            associations are preliminary; confirm availability locally.
           </p>
-        </div>
-      </section>
-      <section className="shell section">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">LESS GUESSWORK. MORE DISCOVERY.</span>
-            <h2>Your next find, in three steps</h2>
-          </div>
-        </div>
-        <div className="how-grid">
-          {[
-            [
-              "Search for a product",
-              "Tell us what you’re looking for, from phone chargers to fabrics.",
-            ],
-            [
-              "Find a relevant street",
-              "Discover streets associated with your shopping category.",
-            ],
-            [
-              "Explore your options",
-              "Get to know the area and confirm availability when you visit.",
-            ],
-          ].map(([title, text], i) => (
-            <div className="how-step" key={title}>
-              <span className="how-number">0{i + 1}</span>
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
+        </section>
+        <section className="section how-section" aria-labelledby="how-title">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">
+                A LITTLE DIRECTION GOES A LONG WAY
+              </span>
+              <h2 id="how-title">Find it. Explore it.</h2>
             </div>
-          ))}
-        </div>
-      </section>
-      <div className="shell">
-        <div className="cta-panel">
-          <div>
-            <h2>A busy marketplace. A clearer starting point.</h2>
-            <p>Take a look around before you head out.</p>
+            <p className="how-intro">Less wandering. More finding.</p>
           </div>
-          <Button asChild>
-            <Link href="/streets">
-              Discover the streets <ArrowRight size={17} />
-            </Link>
-          </Button>
-        </div>
+          <div className="how-grid">
+            {[
+              {
+                Icon: Search,
+                title: "Search for a product",
+                text: "From a phone charger to the perfect fabric. Start with what you need.",
+              },
+              {
+                Icon: Route,
+                title: "Find the right street",
+                text: "See which streets are associated with your shopping category.",
+              },
+              {
+                Icon: ShoppingBag,
+                title: "Explore your options",
+                text: "Get directions, discover shops and confirm the details when you visit.",
+              },
+            ].map(({ Icon, title, text }, index) => (
+              <div className="how-step" key={title}>
+                <span className="how-number">
+                  <Icon size={21} strokeWidth={1.6} />
+                </span>
+                <div>
+                  <span className="step-label">0{index + 1}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </>
   );
 }
-
 export default function Home() {
   return (
     <Suspense fallback={<LoadingFeedback />}>

@@ -21,7 +21,11 @@ export default async function Categories() {
       </div>
       <div className="category-grid">
         {categories.map((category) => (
-          <CategoryCard category={category} key={category.id} />
+          <CategoryCard
+            category={category}
+            key={category.id}
+            headingLevel={2}
+          />
         ))}
       </div>
       {!categories.length && <p>No categories have been added yet.</p>}

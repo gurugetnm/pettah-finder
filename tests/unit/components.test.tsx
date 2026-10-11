@@ -53,10 +53,9 @@ describe("discovery components", () => {
       ],
     };
     render(<StreetCard street={street} />);
-    expect(screen.getByRole("link")).toHaveAttribute(
-      "href",
-      "/streets/1st-cross-street",
-    );
+    expect(
+      screen.getByRole("link", { name: "Explore 1st Cross Street" }),
+    ).toHaveAttribute("href", "/streets/1st-cross-street");
     expect(screen.getByText("Mobile Accessories")).toBeVisible();
   });
   it("makes recorded valid shop contact details callable", () => {
@@ -81,14 +80,20 @@ describe("discovery components", () => {
         <Header />
       </ThemeRoot>,
     );
-    const group = screen.getByRole("group", { name: "Colour theme" });
     for (const selected of ["light", "dark", "system"]) {
+      await userEvent.click(
+        screen.getByRole("button", { name: "Change colour theme" }),
+      );
+      const group = screen.getByRole("group", { name: "Colour theme" });
       await userEvent.click(
         within(group).getByRole("button", { name: `Use ${selected} theme` }),
       );
       for (const theme of ["light", "dark", "system"])
         expect(
-          within(group).getByRole("button", { name: `Use ${theme} theme` }),
+          within(group).getByRole("button", {
+            name: `Use ${theme} theme`,
+            hidden: true,
+          }),
         ).toHaveAttribute("aria-pressed", String(theme === selected));
     }
   });

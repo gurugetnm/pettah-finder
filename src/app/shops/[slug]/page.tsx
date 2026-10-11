@@ -45,6 +45,9 @@ export default async function ShopDetail({
           {shop.description ??
             "No description has been provided for this business."}
         </p>
+        <div className="detail-actions">
+          <DirectionsLink destination={`${shop.name}, ${shop.street.name}`} />
+        </div>
       </div>
       <div className="detail-grid">
         <div>
@@ -116,7 +119,6 @@ export default async function ShopDetail({
             Google Maps resolves the business and street name. Confirm the
             destination before travelling.
           </p>
-          <DirectionsLink destination={`${shop.name}, ${shop.street.name}`} />
         </aside>
       </div>
     </div>

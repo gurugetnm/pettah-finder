@@ -55,7 +55,7 @@ export default async function Streets({
           </Link>
         ))}
       </nav>
-      <StreetGrid streets={streets} />
+      <StreetGrid streets={streets} headingLevel={2} />
       {!streets.length && (
         <div className="empty-state">
           <h2>No streets in this category yet.</h2>

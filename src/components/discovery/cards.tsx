@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { DirectionsLink } from "./directions-link";
 import {
   ArrowUpRight,
   MapPin,
+  ArrowRight,
   Cpu,
   Smartphone,
   Scissors,
@@ -34,17 +36,20 @@ const icons: Record<string, LucideIcon> = {
 };
 export function CategoryCard({
   category,
+  headingLevel = 3,
 }: {
+  headingLevel?: 2 | 3;
   category: Pick<Category, "name" | "slug" | "description" | "iconKey">;
 }) {
   const Icon = icons[category.iconKey] ?? ShoppingBag;
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <Link className="category-card" href={`/streets?category=${category.slug}`}>
       <span className="icon-box">
         <Icon size={25} strokeWidth={1.6} />
       </span>
       <span>
-        <h3>{category.name}</h3>
+        <Heading>{category.name}</Heading>
         <p>{category.description}</p>
       </span>
       <ArrowUpRight className="card-arrow" size={18} aria-hidden="true" />
@@ -53,43 +58,57 @@ export function CategoryCard({
 }
 export function StreetCard({
   street,
-  index = 0,
+  headingLevel = 3,
 }: {
   street: StreetSummary;
-  index?: number;
+  headingLevel?: 2 | 3;
 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <article className="street-card">
-      <Link href={`/streets/${street.slug}`} className="street-card-link">
-        <div className={`street-banner banner-${index % 3}`}>
-          <span className="street-number">
-            {String(index + 1).padStart(2, "0")}
+      <Link
+        href={`/streets/${street.slug}`}
+        className="street-card-link"
+        aria-label={`Explore ${street.name}`}
+      >
+        <div className="street-meta">
+          <span>
+            <MapPin size={14} /> Pettah, Colombo
           </span>
-          <MapPin size={27} strokeWidth={1.5} />
-          <span className="street-banner-label">PETTAH / COLOMBO</span>
-          <ArrowUpRight size={22} />
+          <ArrowUpRight size={18} />
         </div>
-        <div className="street-body">
-          <h3>{street.name}</h3>
-          <p>{street.description}</p>
-          <div className="tags">
-            {street.categories.map(({ category }) => (
-              <span key={category.id}>{category.name}</span>
-            ))}
-          </div>
-          <div className="street-cta">
-            Explore this street <ArrowUpRight size={16} />
-          </div>
+        <Heading>{street.name}</Heading>
+        <p>{street.description}</p>
+        <div className="tags">
+          {street.categories.map(({ category }) => (
+            <span key={category.id}>{category.name}</span>
+          ))}
         </div>
+        <span className="street-cta">
+          Explore street <ArrowRight size={16} />
+        </span>
       </Link>
+      <div className="street-directions">
+        <DirectionsLink destination={street.name} compact />
+      </div>
     </article>
   );
 }
-export function StreetGrid({ streets }: { streets: StreetSummary[] }) {
+export function StreetGrid({
+  streets,
+  headingLevel = 3,
+}: {
+  streets: StreetSummary[];
+  headingLevel?: 2 | 3;
+}) {
   return (
     <div className="street-grid">
-      {streets.map((street, i) => (
-        <StreetCard street={street} index={i} key={street.id} />
+      {streets.map((street) => (
+        <StreetCard
+          street={street}
+          key={street.id}
+          headingLevel={headingLevel}
+        />
       ))}
     </div>
   );

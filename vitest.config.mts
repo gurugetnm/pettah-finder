@@ -18,6 +18,14 @@ export default defineConfig({
       {
         extends: true,
         test: {
+          name: "pipeline",
+          environment: "node",
+          include: ["tests/data-pipeline/**/*.test.ts"],
+        },
+      },
+      {
+        extends: true,
+        test: {
           name: "integration",
           environment: "node",
           include: ["tests/integration/**/*.test.ts"],

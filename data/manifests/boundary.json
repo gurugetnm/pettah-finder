@@ -1,0 +1,9 @@
+{
+  "name": "Pettah study area (approximate bounding box)",
+  "bbox": { "south": 6.932, "west": 79.847, "north": 6.943, "east": 79.861 },
+  "authoritative": false,
+  "source": "Same bbox as the project's OpenStreetMap road snapshot (docs/data-sources.md, retrieved 12 October 2026). Manually reviewed: it contains all six mapped Pettah shopping streets in src/data/street-locations.json. No authoritative Pettah boundary has been adopted.",
+  "safetyMarginMetres": 0,
+  "validatedAt": "2026-10-12",
+  "notes": "Approximate only. Records outside are flagged out_of_area and cannot be published. Edges may clip parts of Pettah or include fringes of Fort/Kotahena; review before enlarging."
+}

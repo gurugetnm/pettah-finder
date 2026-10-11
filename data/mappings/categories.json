@@ -1,0 +1,19 @@
+{
+  "$comment": "OSM shop=* value -> Pettah Finder category slugs (prisma/seed-data.ts). Unlisted values go to review; never guess.",
+  "shop": {
+    "bag": ["bags"],
+    "boutique": ["clothing"],
+    "clothes": ["clothing"],
+    "computer": ["electronics"],
+    "electronics": ["electronics"],
+    "fabric": ["fabrics-textiles"],
+    "houseware": ["household-goods"],
+    "jewelry": ["jewellery"],
+    "lighting": ["lighting"],
+    "mobile_phone": ["mobile-accessories"],
+    "shoes": ["footwear"],
+    "spices": ["spices"],
+    "stationery": ["stationery"],
+    "toys": ["toys"]
+  }
+}

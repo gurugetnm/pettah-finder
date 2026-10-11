@@ -14,7 +14,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "test": "vitest run --project unit",
+    "test": "vitest run --project unit --project pipeline",
     "test:integration": "tsx scripts/test-migrate.ts && vitest run --project integration",
     "test:e2e": "tsx scripts/e2e.ts",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",

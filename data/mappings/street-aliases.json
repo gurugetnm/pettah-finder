@@ -1,0 +1,19 @@
+{
+  "$comment": "Existing street slug -> documented spellings. Only exact (normalized) matches associate a shop; similar names are NOT merged.",
+  "streets": {
+    "1st-cross-street": [
+      "1st Cross Street",
+      "First Cross Street",
+      "1st Cross St"
+    ],
+    "2nd-cross-street": [
+      "2nd Cross Street",
+      "Second Cross Street",
+      "2nd Cross St"
+    ],
+    "sea-street": ["Sea Street", "Sea St"],
+    "maliban-street": ["Maliban Street", "Maliban St"],
+    "prince-street": ["Prince Street", "Prince St"],
+    "main-street": ["Main Street", "Main St"]
+  }
+}

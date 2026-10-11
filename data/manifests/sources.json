@@ -1,0 +1,64 @@
+{
+  "sources": [
+    {
+      "id": "osm",
+      "name": "OpenStreetMap",
+      "url": "https://www.openstreetmap.org/copyright",
+      "type": "osm",
+      "license": "ODbL-1.0",
+      "permissionStatus": "APPROVED",
+      "permissionEvidence": "OpenStreetMap data is published under the Open Database License (https://www.openstreetmap.org/copyright, https://osmfoundation.org/wiki/Licence_and_Legal_FAQ). Overpass access limited to small, manually triggered, cached queries per the instance usage policy.",
+      "attribution": "© OpenStreetMap contributors",
+      "attributionUrl": "https://www.openstreetmap.org/copyright",
+      "reviewedAt": "2026-10-12",
+      "geographicScope": "Pettah, Colombo (data/manifests/boundary.json)",
+      "allowedFields": [
+        "name",
+        "street",
+        "address",
+        "latitude",
+        "longitude",
+        "phone",
+        "website",
+        "openingHours",
+        "categories"
+      ],
+      "publicationPermitted": true,
+      "automatedCollection": true,
+      "allowedEndpoints": ["https://overpass-api.de/api/interpreter"],
+      "notes": "Share-alike applies to derivative databases; see docs/licensing.md. Not independently verified by virtue of being in OSM."
+    },
+    {
+      "id": "peta-lk",
+      "name": "peta.lk",
+      "url": "https://peta.lk/",
+      "type": "directory",
+      "license": "",
+      "permissionStatus": "PERMISSION_REQUIRED",
+      "permissionEvidence": "",
+      "attribution": "",
+      "reviewedAt": "2026-10-12",
+      "geographicScope": "Pettah, Colombo",
+      "allowedFields": [],
+      "publicationPermitted": false,
+      "automatedCollection": false,
+      "notes": "Terms of service, database rights and republication permission not yet reviewed. No adapter is active; do not fetch."
+    },
+    {
+      "id": "pettahhub-lk",
+      "name": "Pettah Hub",
+      "url": "https://www.pettahhub.lk/",
+      "type": "directory",
+      "license": "",
+      "permissionStatus": "PERMISSION_REQUIRED",
+      "permissionEvidence": "",
+      "attribution": "",
+      "reviewedAt": "2026-10-12",
+      "geographicScope": "Pettah, Colombo",
+      "allowedFields": [],
+      "publicationPermitted": false,
+      "automatedCollection": false,
+      "notes": "Terms of service, database rights and republication permission not yet reviewed. No adapter is active; do not fetch."
+    }
+  ]
+}

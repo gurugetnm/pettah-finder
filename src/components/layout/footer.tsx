@@ -12,13 +12,14 @@ export function Footer() {
                 Pettah Finder<span className="brand-dot">.</span>
               </span>
             </Link>
-            <p>A little local knowledge. A better shopping day.</p>
+            <p>Find the right street. Discover the right shop.</p>
           </div>
           <nav aria-label="Footer navigation">
             <Link href="/streets">Streets</Link>
             <Link href="/categories">Categories</Link>
             <Link href="/shops">Shops</Link>
             <Link href="/search">Search</Link>
+            <Link href="/image-credits">Photo & map credits</Link>
           </nav>
         </div>
         <div className="footer-bottom">

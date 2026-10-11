@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import LoadingFeedback from "@/components/layout/loading-feedback";
 import { Info } from "lucide-react";
@@ -74,6 +75,18 @@ async function SearchContent({
                 ))}
               </div>
             </section>
+          )}
+          {matchedShops.length === 0 && (
+            <div className="search-shop-note">
+              <h2>Individual shops</h2>
+              <p>
+                No verified shops match this search yet. Use the street guide as
+                a starting point and confirm availability when you visit.
+              </p>
+              <Link href="/shops" className="text-link">
+                Browse the shop directory →
+              </Link>
+            </div>
           )}
           <p className="accuracy-note">
             <Info size={16} /> Results reflect preliminary category

@@ -1,3 +1,5 @@
+import { StreetExplorer } from "@/components/discovery/street-explorer";
+import { streetMapData } from "@/lib/utils/street-map-data";
 import { MarketPhoto } from "@/components/discovery/market-photo";
 import { Suspense } from "react";
 import LoadingFeedback from "@/components/layout/loading-feedback";
@@ -92,6 +94,20 @@ async function HomeContent() {
             <Info size={15} /> A starting point for exploring. Category
             associations are preliminary; confirm availability locally.
           </p>
+        </section>
+        <section
+          className="section map-section"
+          id="explore-map"
+          aria-labelledby="map-title"
+        >
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">A little local direction</span>
+              <h2 id="map-title">Explore Pettah, street by street.</h2>
+              <p>Choose a category. Find a street. Make it your next stop.</p>
+            </div>
+          </div>
+          <StreetExplorer streets={streetMapData(streets)} />
         </section>
       </div>
     </>

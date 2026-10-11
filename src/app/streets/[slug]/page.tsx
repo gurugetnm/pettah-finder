@@ -1,3 +1,7 @@
+import { StreetExplorer } from "@/components/discovery/street-explorer";
+import { streetMapData } from "@/lib/utils/street-map-data";
+import { StreetVisual } from "@/components/discovery/street-visual";
+import { StreetGrid } from "@/components/discovery/cards";
 import Link from "next/link";
 import { DirectionsLink } from "@/components/discovery/directions-link";
 import { notFound } from "next/navigation";
@@ -29,6 +33,15 @@ export default async function StreetDetail({
   const { slug } = await params;
   const street = await getStreet(slug);
   if (!street) notFound();
+  const related = (await discovery().streets())
+    .filter(
+      (s) =>
+        s.slug !== street.slug &&
+        s.categories.some((c) =>
+          street.categories.some((sc) => sc.categoryId === c.categoryId),
+        ),
+    )
+    .slice(0, 3);
   const products = await discovery().products(
     street.categories.map((c) => c.categoryId),
   );
@@ -48,6 +61,9 @@ export default async function StreetDetail({
         <div className="detail-actions">
           <DirectionsLink destination={street.name} />
         </div>
+      </div>
+      <div className="detail-street-visual">
+        <StreetVisual slug={street.slug} name={street.name} />
       </div>
       <div className="detail-grid">
         <div>
@@ -114,8 +130,9 @@ export default async function StreetDetail({
             <h2>Finding your way</h2>
             <p>{street.locationDescription}</p>
             <p className="mt-4">
-              Google Maps resolves the street name. Confirm the destination
-              before you travel; we have not verified a precise map pin.
+              Map points represent the street, not individual shops. Google Maps
+              resolves the street name; confirm the destination before
+              travelling.
             </p>
           </section>
           <section className="detail-panel">
@@ -127,6 +144,20 @@ export default async function StreetDetail({
           </section>
         </aside>
       </div>
+      <section className="section" aria-labelledby="street-map-title">
+        <div className="section-heading">
+          <h2 id="street-map-title">Find this street</h2>
+        </div>
+        <StreetExplorer streets={streetMapData([street])} />
+      </section>
+      {related.length > 0 && (
+        <section className="section">
+          <div className="section-heading">
+            <h2>More streets for your list</h2>
+          </div>
+          <StreetGrid streets={related} />
+        </section>
+      )}
     </div>
   );
 }

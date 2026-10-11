@@ -4,7 +4,7 @@ import LoadingFeedback from "@/components/layout/loading-feedback";
 import Link from "next/link";
 import { ArrowRight, MapPin, Info, Route } from "lucide-react";
 import { discovery } from "@/features/discovery/repository";
-import { CategoryCard, StreetGrid } from "@/components/discovery/cards";
+import { CategoryDiscovery, StreetGrid } from "@/components/discovery/cards";
 import { SearchForm } from "@/components/search/search-form";
 export const dynamic = "force-dynamic";
 async function HomeContent() {
@@ -64,11 +64,7 @@ async function HomeContent() {
               All categories <ArrowRight size={16} />
             </Link>
           </div>
-          <div className="category-grid">
-            {categories.map((category) => (
-              <CategoryCard category={category} key={category.id} />
-            ))}
-          </div>
+          <CategoryDiscovery categories={categories} />
           {!categories.length && (
             <p>Categories will appear once the guide is populated.</p>
           )}

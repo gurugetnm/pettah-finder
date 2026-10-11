@@ -40,3 +40,9 @@ Remaining work: collect permissioned, independently verified shop data; configur
 This later redesign supersedes the earlier frontend design description above. Full implementation, source provenance, limitations and incremental commit record are in [redesign-report.md](redesign-report.md).
 
 Verified: 22 unit tests, 7 PostgreSQL integration tests, 11 production Chromium scenarios, ESLint, TypeScript, Prettier, production build and production dependency audit (no known vulnerabilities). Responsive assertions now also include 360px. Both themes and loaded mobile Leaflet map pass axe checks; geographic pin overlap caught during mobile testing was corrected. No destructive database changes, schema changes, imported shops or remote deployment occurred.
+
+## Data pipeline verification — 12 October 2026
+
+Additive migration `shop_source_provenance` applied to local `pettah_dev` and `pettah_test` (no reset, no existing rows changed). `pnpm check` passed (formatting, ESLint, TypeScript, 56 unit/pipeline tests). `pnpm test:integration` passed (18 tests, 11 for publication safety). `pnpm build` passed. `pnpm test:e2e` passed (11 Chromium scenarios).
+
+Live pilot: one bounded Overpass query returned 33 `shop=*` elements (27 named, 6 unnamed, 0 malformed, 0 out of area, 0 duplicate suggestions; 19 unmapped shop types and 21 without a matched street sent to review). Dry-run publication: 27 skipped as awaiting review. **No records were reviewed, verified or written to any database.** Live candidates stay only in git-ignored `.local/`. The e2e fixtures have no `ShopSource` rows, so the attribution line on shop pages was type-checked and built but not visually exercised.

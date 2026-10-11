@@ -31,3 +31,16 @@ The earlier “no external photography/map data” statement describes the previ
 The Leaflet map renders the local vector snapshot. It makes **no tile requests** and therefore has no external tile provider, credentials, paid dependency, bulk prefetch, or public OSM tile-server load. A tile background is deliberately unnecessary for this compact street finder. The source snapshot should be refreshed if roads change; do not claim live mapping. This implementation covers the supplied Pettah streets rather than providing a global basemap.
 
 Precise street photographs and current category/store photographs still need appropriately licensed, individually verified sourcing. Neutral geographic illustrations deliberately fill that gap. No business records, contacts, counts, ratings or availability claims were introduced.
+
+## Shop data source inventory (data pipeline)
+
+Authoritative status is `data/manifests/sources.json`; see [data-pipeline.md](data-pipeline.md) and [licensing.md](licensing.md).
+
+| Name                           | URL                                     | Data type                                 | License      | Permission status                       | Access method                                                                       | Attribution                  | Last reviewed                        |
+| ------------------------------ | --------------------------------------- | ----------------------------------------- | ------------ | --------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------ |
+| OpenStreetMap                  | https://www.openstreetmap.org/copyright | Shop POIs (`shop=*` nodes/ways/relations) | ODbL 1.0     | APPROVED (open license)                 | One bounded, cached Overpass query per manual run, or a local Overpass-JSON extract | © OpenStreetMap contributors | 12 Oct 2026                          |
+| peta.lk                        | https://peta.lk/                        | Business directory                        | Unknown      | PERMISSION_REQUIRED                     | None (no adapter)                                                                   | —                            | 12 Oct 2026 (terms not yet reviewed) |
+| Pettah Hub                     | https://www.pettahhub.lk/               | Business directory                        | Unknown      | PERMISSION_REQUIRED                     | None (no adapter)                                                                   | —                            | 12 Oct 2026 (terms not yet reviewed) |
+| Shop-owner / licensed CSV/JSON | Per manifest entry                      | Shop records                              | Per manifest | Must be added as APPROVED with evidence | `pnpm data:import:file`                                                             | Per manifest                 | —                                    |
+
+Pilot run 11 Oct 2026 (UTC): one Overpass query returned 33 `shop=*` elements in the study area (OSM base 2026-10-11T19:01:35Z). 27 named candidates are held locally for review; none are reviewed, verified or published. The committed fixture `data/fixtures/overpass-pettah.json` is synthetic (TEST FIXTURE names, fake IDs) and not OSM data.

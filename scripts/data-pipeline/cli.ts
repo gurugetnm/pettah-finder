@@ -424,7 +424,7 @@ async function publish(args: {
     log(`Plan: ${JSON.stringify(summarize(plan))}`);
     if (!args.apply)
       return log(
-        "Dry run: no database changes made. Re-run with data:publish -- --apply to write.",
+        "Dry run: no database changes made. Run pnpm data:publish to write.",
       );
     const now = new Date();
     const backup = await backupFor(db, plan, now);
@@ -436,7 +436,7 @@ async function publish(args: {
     await applyPlan(db, plan, now);
     writeJson(backupFile, { ...backup, status: "applied" });
     log(
-      `Applied. Backup for rollback: ${rel(backupFile)} (data:publish -- --rollback ${backupFile.split("/").pop()})`,
+      `Applied. Backup for rollback: ${rel(backupFile)} (pnpm data:publish --rollback ${backupFile.split("/").pop()})`,
     );
   } finally {
     await db.$disconnect();

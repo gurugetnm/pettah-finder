@@ -64,7 +64,7 @@ Integration and E2E tests **require** a separate local `TEST_DATABASE_URL` whose
 
 ## Data maintenance and deployment
 
-Data is maintained through `prisma/seed-data.ts`, reviewed scripts and migrations. There is no application write API. See [data sources](docs/data-sources.md) and [database guide](docs/database.md) before adding shops. The development seed will not publish real businesses; collect and verify actual information before adding listings through a reviewed database script.
+Data is maintained through `prisma/seed-data.ts`, reviewed scripts and migrations. There is no application write API. See [data sources](docs/data-sources.md), [database guide](docs/database.md) and the [data pipeline](docs/data-pipeline.md) (`pnpm data:*` commands) before adding shops. The development seed will not publish real businesses; collect and verify actual information before adding listings through a reviewed database script.
 
 Deploy the Next.js app to Vercel or a Node host with managed PostgreSQL. Install with the frozen lockfile and build with `pnpm build`. Apply `pnpm db:deploy` using a migration role in a controlled release step; give the application a separate SELECT-only role. Do not run the local seed in production. CI runs checks and has no deployment step. Migration credentials and runtime credentials can both be supplied through `DATABASE_URL` in their respective execution environments; no browser-exposed connection string is used.
 
@@ -76,4 +76,4 @@ The full dependency audit currently reports a development-only `braces` advisory
 
 Next: gather permissioned shop data, record its provenance and verification date, publish a small real directory, and add pagination as required. Stay focused on public discovery.
 
-Further reading: [design system](docs/design.md), [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md).
+Further reading: [design system](docs/design.md), [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md), [data licensing](docs/licensing.md).

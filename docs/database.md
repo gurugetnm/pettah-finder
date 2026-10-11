@@ -12,6 +12,8 @@ Deleting a Street with shops is restricted. Categories/products linked to depend
 
 ## Maintaining real shop data
 
+Use the reviewed CLI pipeline in [data-pipeline.md](data-pipeline.md) for imported shops. `ShopSource` stores provenance per (source, sourceRecordId); deleting a shop cascades its source rows.
+
 Record the source, reuse permission, verification date and business consent where needed before loading any shop. Use a reviewed, version-controlled script and existing Prisma models; never create an admin workflow. New shops default to UNVERIFIED/DRAFT and cannot appear publicly. A confirmed listing must deliberately set VERIFIED, PUBLISHED and `lastVerifiedAt`. Populate categories/products using foreign-key IDs, and leave unknown values null. Coordinate data needs licensed provenance. Do not import data from a private test database into the public dataset.
 
 Production should use a SELECT-only runtime role separate from the schema owner. For example, an operator can grant CONNECT on the database, USAGE on the public schema and SELECT on Street, Category, Product, ProductAlias, StreetCategory, Shop, ShopCategory and ShopProduct to a dedicated role. Grant default SELECT privileges for future tables if desired. Supply that role's URL as `DATABASE_URL` for the web process; supply the schema-owner URL only in the controlled migration job. Use TLS as required by the database provider; do not disable certificate validation.

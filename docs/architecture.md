@@ -7,13 +7,13 @@ One Next.js application serves public pages with App Router Server Components. P
 - `src/lib/db`: lazily constructed, process-reused Prisma client with the PostgreSQL adapter. Pool max 5, connect timeout 5 seconds. No client component imports this module.
 - `src/lib/validations`: Zod query, slug and filter validation plus dedicated test database guard. Search uses NFKC, whitespace normalization and case-insensitive PostgreSQL matching.
 - `src/lib/utils`: Tailwind class merging, validated site origin, encoded Google Maps URLs.
-- `src/components`: reusable presentation cards, native GET search form, shadcn-style Radix Button, directions links, original SVG market illustration, shared header/footer. Type-only repository imports do not pull server code into components.
+- `src/components`: reusable presentation cards, native GET search form, custom Radix-based Button, directions links, shared header/footer. Type-only repository imports do not pull server code into components.
 - `prisma`: committed schema, migrations and deterministic development seeds.
 - `tests`: unit/components, real PostgreSQL integration and production-server browser tests.
 
 Data flow: URL query → validation → server-only repository → parameterized Prisma query → Server Component → HTML. GET forms keep filters in shareable URLs. Invalid duplicate/overlong queries return helpful feedback and do not execute searches. Unknown or unpublished listing slugs call `notFound()`. PostgreSQL failures reach the generic Next.js error boundary; health returns a generic 503.
 
-The shared header and theme provider are client components for mobile menu and theme state. `next-themes` initializes system/local preference before hydration. Controls use fixed accessible labels so SSR does not depend on client-only preference values. Native forms and listing pages require no custom browser state library. Light/dark variables, minimal animations and system fonts keep the initial page light and avoid font-download layout shifts.
+The shared header and theme provider are client components for mobile menu and theme state. `next-themes` initializes system/local preference before hydration. Controls use fixed accessible labels so SSR does not depend on client-only preference values. Native forms and listing pages require no custom browser state library. Shared light/dark tokens and reduced-motion rules define the public interface. DM Sans and Plus Jakarta Sans are served locally as Latin variable WOFF2 fonts through `next/font/local`, with fallback metric adjustment and `display: swap`. No external font service is contacted. The compact theme chooser uses native disclosure semantics with keyboard dismissal. See the [design system](design.md).
 
 Public database pages are rendered at request time; React `cache` only deduplicates individual detail queries within a request. There is no personalized data. Sitemap URLs are derived from the same public repositories and a configured origin. Search pages are noindex. Directory filters canonicalize to their base directory. Query limits are explicit in repositories; the current six-street dataset needs no pagination.
 

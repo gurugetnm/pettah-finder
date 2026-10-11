@@ -6,7 +6,7 @@ A lightweight public shopping guide for Pettah, Colombo. Search products and ali
 
 ## What works
 
-- Responsive homepage with product search, database category cards and street suggestions.
+- Search-led homepage with warm light/dark themes, locally served typography, compact category tiles and street cards with direct directions.
 - Shareable search (`/search?q=charger`) across products, aliases, categories, street names and public shop listings.
 - Category directory, filtered streets and individual street pages with related products.
 - Shop directory with product/category/street filters and public shop detail pages. Only published, verified shops appear.
@@ -19,7 +19,7 @@ The development seed includes **6 streets, 12 categories, 13 products and no sho
 
 ## Stack
 
-Next.js 16.4 App Router, React 19.3, strict TypeScript, Tailwind 4, shadcn-style Radix Button, Lucide, Zod, PostgreSQL 17 and Prisma 7.10 with the pg driver adapter. Node 24 LTS and pnpm 11.22.0 are selected for reproducibility. Prisma is pinned to stable 7.10 rather than the registry's Prisma 8 release candidate.
+Next.js 16.4 App Router, React 19.3, strict TypeScript, Tailwind 4, custom Radix-based Button, Lucide, Zod, PostgreSQL 17 and Prisma 7.10 with the pg driver adapter. Node 24 LTS and pnpm 11.22.0 are selected for reproducibility. Prisma is pinned to stable 7.10 rather than the registry's Prisma 8 release candidate.
 
 ## Local setup
 
@@ -76,4 +76,4 @@ The full dependency audit currently reports a development-only `braces` advisory
 
 Next: gather permissioned shop data, record its provenance and verification date, publish a small real directory, and add pagination as required. Stay focused on public discovery.
 
-Further reading: [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md).
+Further reading: [design system](docs/design.md), [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md).

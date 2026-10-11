@@ -15,9 +15,11 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "test": "vitest run --project unit",
-    "test:integration": "vitest run --project integration",
+    "test:integration": "tsx scripts/test-migrate.ts && vitest run --project integration",
     "test:e2e": "tsx scripts/e2e.ts",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "db:local": "tsx scripts/local-db.ts",
+    "db:local:stop": "tsx scripts/local-db.ts --stop"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",

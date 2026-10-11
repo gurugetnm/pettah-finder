@@ -1,0 +1,10 @@
+name: Bug report
+description: Report a reproducible problem
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include the page, expected behavior, reproduction steps and screen size. Do not include private information.
+    validations:
+      required: true

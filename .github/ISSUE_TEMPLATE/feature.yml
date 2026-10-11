@@ -1,0 +1,9 @@
+name: Feature request
+description: Suggest an improvement to public shopping discovery
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: What would help you discover streets or shops?
+    validations:
+      required: true

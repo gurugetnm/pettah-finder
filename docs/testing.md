@@ -1,0 +1,13 @@
+# Testing strategy
+
+`pnpm check` combines format checking, ESLint, generated Next route types/strict TypeScript and Vitest unit/component tests. Unit tests cover Unicode/case/whitespace normalization, query length boundaries, duplicate parameters, control characters, slug validation, optional filters, encoded Maps URLs, CSS class merging and database isolation guards. Component tests use React Testing Library and user-event for the labelled native search form, category/street links, helpful empty search and interactive mobile navigation. jsdom has a matchMedia polyfill; actual themes and navigation are also exercised in a browser.
+
+`pnpm test:integration` first applies committed migrations to the guarded dedicated test PostgreSQL database. Tests exercise repeated upsert seeding, real relations, aliases/category/street/product search, empty and SQL-like literal inputs, deterministic ordering/filtering, unknown slugs, unique constraints, foreign keys and public-shop publication rules. Transactional synthetic shops are rolled back; a separate transaction verifies that deleting a street with a shop is restricted. Development and production databases are never reset or modified by integration tests.
+
+`pnpm build` verifies a real production bundle. `pnpm test:e2e` migrates/seeds the dedicated test database, owns a production server at :3100, and runs Chromium Playwright tests. Journeys cover homepage search → category and street results → street details/directions, category filtering, public shop filters/details/search, empty states, duplicate queries, HTTP 404s, mobile navigation, dark/light persistence and system initialization, security headers/health/SEO routes and horizontal overflow at 320, 375, 390, 430, 768, 1024 and 1440px across all major page types. Synthetic public/draft/unverified shop fixtures are parameterized writes confined to this test database and removed in `finally`.
+
+The loader is scoped to homepage/search Suspense boundaries instead of a root loading boundary. This keeps missing street/shop responses at HTTP 404 before streaming headers are sent; browser tests assert the actual status.
+
+Visual review captures a full homepage at 1440px light and 390px light/dark under ignored `.local/screenshots`. Human visual inspection complements overflow assertions. Accessibility includes semantic landmarks, labels, focus rings, keyboard operation, 44px controls and reduced motion. There is no claim of comprehensive WCAG certification or performance benchmark.
+
+CI repeats the same checks on Node 24 with PostgreSQL 17, a frozen lockfile, Chromium installation and production dependency audit. CI runs no automatic deployment. Development-only unresolved audit findings are recorded in security documentation.

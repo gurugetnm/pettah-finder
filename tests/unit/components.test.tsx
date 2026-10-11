@@ -63,6 +63,24 @@ describe("discovery components", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("No streets found");
     expect(screen.getByText(/Try a broader product name/)).toBeVisible();
   });
+  it("closes mobile navigation with Escape and returns focus", async () => {
+    render(
+      <ThemeRoot>
+        <Header />
+      </ThemeRoot>,
+    );
+    const button = screen.getByRole("button", { name: "Open navigation" });
+    await userEvent.click(button);
+    within(screen.getByRole("navigation", { name: "Mobile navigation" }))
+      .getByRole("link", { name: "Shops" })
+      .focus();
+    await userEvent.keyboard("{Escape}");
+    expect(
+      screen.queryByRole("navigation", { name: "Mobile navigation" }),
+    ).not.toBeInTheDocument();
+    expect(button).toHaveFocus();
+    expect(button).toHaveAttribute("aria-expanded", "false");
+  });
   it("opens mobile navigation and closes it after choosing a public route", async () => {
     render(
       <div onClick={(event) => event.preventDefault()}>

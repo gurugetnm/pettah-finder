@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MapPin, Menu, X, Sun, Moon, Monitor } from "lucide-react";
 import { ThemeProvider, useTheme } from "next-themes";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 export function ThemeRoot({ children }: { children: React.ReactNode }) {
   return (
@@ -57,8 +57,18 @@ function ThemeToggle() {
 export function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
+  const menuButton = useRef<HTMLButtonElement>(null);
   return (
-    <header className="site-header">
+    <header
+      className="site-header"
+      onKeyDown={(event) => {
+        if (open && event.key === "Escape") {
+          event.preventDefault();
+          setOpen(false);
+          menuButton.current?.focus();
+        }
+      }}
+    >
       <div className="shell header-inner">
         <Link href="/" className="brand" aria-label="Pettah Finder home">
           <span className="brand-mark">
@@ -85,9 +95,10 @@ export function Header() {
           <Button
             variant="ghost"
             className="mobile-menu px-3"
+            ref={menuButton}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
-            aria-controls="mobile-navigation"
+            aria-controls={open ? "mobile-navigation" : undefined}
             onClick={() => setOpen(!open)}
           >
             {open ? <X /> : <Menu />}

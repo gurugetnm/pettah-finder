@@ -31,6 +31,10 @@ describe("search input", () => {
     expect(parseQuery("a".repeat(80)).success).toBe(true);
     expect(parseQuery("%' OR 1=1 --").success).toBe(true);
   });
+  it("enforces the limit after Unicode compatibility expansion", () => {
+    expect(parseQuery("\ufb03".repeat(27)).success).toBe(false);
+    expect(parseQuery("\ufb03".repeat(26) + "ab").data).toHaveLength(80);
+  });
   it("validates route slugs", () => {
     expect(slugSchema.safeParse("1st-cross-street").success).toBe(true);
     for (const slug of [

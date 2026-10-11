@@ -10,7 +10,8 @@ export const querySchema = z
   .string()
   .max(80, "Use 80 characters or fewer.")
   .refine((v) => !/[\u0000-\u001f\u007f]/u.test(v), "Use printable characters.")
-  .transform(normalizeText);
+  .transform(normalizeText)
+  .pipe(z.string().max(80, "Use 80 characters or fewer after normalization."));
 export const slugSchema = z
   .string()
   .min(1)

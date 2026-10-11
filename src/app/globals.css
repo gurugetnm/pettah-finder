@@ -1018,3 +1018,7 @@ p {
     flex-basis: 100%;
   }
 }
+.theme-switch button[aria-pressed="true"] {
+  background: var(--muted);
+  color: var(--primary);
+}

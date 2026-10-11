@@ -63,6 +63,23 @@ describe("discovery components", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("No streets found");
     expect(screen.getByText(/Try a broader product name/)).toBeVisible();
   });
+  it("reports the selected colour theme through toggle state", async () => {
+    render(
+      <ThemeRoot>
+        <Header />
+      </ThemeRoot>,
+    );
+    const group = screen.getByRole("group", { name: "Colour theme" });
+    for (const selected of ["light", "dark", "system"]) {
+      await userEvent.click(
+        within(group).getByRole("button", { name: `Use ${selected} theme` }),
+      );
+      for (const theme of ["light", "dark", "system"])
+        expect(
+          within(group).getByRole("button", { name: `Use ${theme} theme` }),
+        ).toHaveAttribute("aria-pressed", String(theme === selected));
+    }
+  });
   it("closes mobile navigation with Escape and returns focus", async () => {
     render(
       <ThemeRoot>

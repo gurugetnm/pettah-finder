@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MapPin, Menu, X, Sun, Moon, Monitor } from "lucide-react";
 import { ThemeProvider, useTheme } from "next-themes";
-import { useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 export function ThemeRoot({ children }: { children: React.ReactNode }) {
   return (
@@ -23,14 +23,21 @@ const links = [
   ["/categories", "Categories"],
   ["/shops", "Shops"],
 ] as const;
+const subscribeToHydration = () => () => {};
 function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    () => true,
+    () => false,
+  );
   return (
-    <div className="theme-switch">
+    <div className="theme-switch" role="group" aria-label="Colour theme">
       <Button
         variant="ghost"
         className="px-3"
         aria-label="Use light theme"
+        aria-pressed={hydrated && theme === "light"}
         onClick={() => setTheme("light")}
       >
         <Sun size={18} />
@@ -39,6 +46,7 @@ function ThemeToggle() {
         variant="ghost"
         className="px-3"
         aria-label="Use dark theme"
+        aria-pressed={hydrated && theme === "dark"}
         onClick={() => setTheme("dark")}
       >
         <Moon size={18} />
@@ -47,6 +55,7 @@ function ThemeToggle() {
         variant="ghost"
         className="px-3"
         aria-label="Use system theme"
+        aria-pressed={hydrated && theme === "system"}
         onClick={() => setTheme("system")}
       >
         <Monitor size={18} />

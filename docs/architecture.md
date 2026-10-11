@@ -3,7 +3,7 @@
 One Next.js application serves public pages with App Router Server Components. PostgreSQL remains the source of truth; working Prisma integration was retained during scope simplification. There are no accounts, account roles, write endpoints, admin pages, queues or independent services.
 
 - `src/app`: home, search, categories, street listing/detail, shop listing/detail, SEO routes and read-only database health.
-- `src/features/discovery`: server-only repositories. Validated requests become typed Prisma queries; category/product aliases determine street matches. Shop queries always require both PUBLISHED and VERIFIED. Street details filter shops by the same publication criteria. Search returns streets/categories and separately matching public shops.
+- `src/features/discovery`: server-only repositories. Validated requests become typed Prisma queries; category/product aliases determine street matches. A shared `publicShopWhere` predicate requires both PUBLISHED and VERIFIED in shop queries and street-linked shop listings. Street details filter shops by the same publication criteria. Search returns streets/categories and separately matching public shops.
 - `src/lib/db`: lazily constructed, process-reused Prisma client with the PostgreSQL adapter. Pool max 5, connect timeout 5 seconds. No client component imports this module.
 - `src/lib/validations`: Zod query, slug and filter validation plus dedicated test database guard. Search uses NFKC, whitespace normalization and case-insensitive PostgreSQL matching.
 - `src/lib/utils`: Tailwind class merging, validated site origin, encoded Google Maps URLs.

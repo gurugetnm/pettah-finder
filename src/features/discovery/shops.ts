@@ -1,4 +1,5 @@
 import "server-only";
+import { publicShopWhere } from "./public-shop";
 import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db/client";
 import { shopFilterSchema } from "@/lib/validations/filters";
@@ -15,17 +16,13 @@ const include = {
   },
 } satisfies Prisma.ShopInclude;
 export type PublicShop = Prisma.ShopGetPayload<{ include: typeof include }>;
-const published: Prisma.ShopWhereInput = {
-  publicationStatus: "PUBLISHED",
-  verificationStatus: "VERIFIED",
-};
 export function shopRepository(db: PrismaClient) {
   return {
     list: (input: unknown = {}) => {
       const { q, category, street } = shopFilterSchema.parse(input);
       const contains = { contains: q, mode: "insensitive" as const };
       const where: Prisma.ShopWhereInput = {
-        ...published,
+        ...publicShopWhere,
         ...(street ? { street: { slug: street } } : {}),
         ...(category
           ? { categories: { some: { category: { slug: category } } } }
@@ -60,7 +57,10 @@ export function shopRepository(db: PrismaClient) {
     },
     detail: (slug: string) => {
       if (!slugSchema.safeParse(slug).success) return Promise.resolve(null);
-      return db.shop.findFirst({ where: { slug, ...published }, include });
+      return db.shop.findFirst({
+        where: { slug, ...publicShopWhere },
+        include,
+      });
     },
   };
 }

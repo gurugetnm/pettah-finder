@@ -135,6 +135,12 @@ describe("PostgreSQL discovery", () => {
             })
           ).map((s) => s.slug),
         ).toEqual(["test-fixture-public"]);
+        const streetRepo = discoveryRepository(tx as unknown as PrismaClient);
+        expect(
+          (await streetRepo.street("1st-cross-street"))?.shops.map(
+            (shop) => shop.slug,
+          ),
+        ).toEqual(["test-fixture-public"]);
         expect(await shopRepo.detail("test-fixture-draft")).toBeNull();
         expect(await shopRepo.detail("test-fixture-unverified")).toBeNull();
         expect(

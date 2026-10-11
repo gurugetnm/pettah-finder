@@ -1,4 +1,5 @@
 import "server-only";
+import { publicShopWhere } from "./public-shop";
 import { Prisma, PrismaClient } from "@/generated/prisma/client";
 import { getDb } from "@/lib/db/client";
 import { querySchema, slugSchema } from "@/lib/validations/search";
@@ -36,10 +37,7 @@ export function discoveryRepository(db: PrismaClient) {
         include: {
           ...streetInclude,
           shops: {
-            where: {
-              publicationStatus: "PUBLISHED",
-              verificationStatus: "VERIFIED",
-            },
+            where: publicShopWhere,
             select: { id: true, slug: true, name: true, description: true },
             orderBy: { name: "asc" },
             take: 30,

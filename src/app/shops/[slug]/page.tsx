@@ -119,6 +119,29 @@ export default async function ShopDetail({
             Google Maps resolves the business and street name. Confirm the
             destination before travelling.
           </p>
+          {shop.sources.map((source) => (
+            <p key={source.id} className="mt-3">
+              Listing data {source.attribution}
+              {source.attributionUrl && (
+                <>
+                  {" "}
+                  (
+                  <a className="text-link" href={source.attributionUrl}>
+                    {source.license}
+                  </a>
+                  )
+                </>
+              )}
+              {source.sourceUrl && (
+                <>
+                  {" · "}
+                  <a className="text-link" href={source.sourceUrl}>
+                    Source record
+                  </a>
+                </>
+              )}
+            </p>
+          ))}
         </aside>
       </div>
     </div>

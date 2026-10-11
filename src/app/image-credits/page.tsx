@@ -47,6 +47,22 @@ export default function ImageCredits() {
           Category associations remain preliminary.
         </p>
       </section>
+      <section className="detail-panel">
+        <h2>Shop listings</h2>
+        <p>
+          Some shop listings are derived from OpenStreetMap data © OpenStreetMap
+          contributors, available under the{" "}
+          <a
+            className="text-link"
+            href="https://www.openstreetmap.org/copyright"
+          >
+            Open Database License
+          </a>
+          . Each such listing names its source and links to the original record.
+          A listing is shown only after review and independent verification of
+          the business and its location.
+        </p>
+      </section>
       <Link className="text-link" href="/">
         Back to exploring →
       </Link>

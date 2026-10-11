@@ -14,6 +14,16 @@ const include = {
     include: { product: true },
     orderBy: { product: { name: "asc" as const } },
   },
+  sources: {
+    select: {
+      id: true,
+      attribution: true,
+      attributionUrl: true,
+      license: true,
+      sourceUrl: true,
+    },
+    orderBy: { source: "asc" as const },
+  },
 } satisfies Prisma.ShopInclude;
 export type PublicShop = Prisma.ShopGetPayload<{ include: typeof include }>;
 export function shopRepository(db: PrismaClient) {

@@ -34,3 +34,9 @@ Non-failing tool notices remain: Playwright reports NO_COLOR/FORCE_COLOR precede
 GitHub Actions workflow is committed with PostgreSQL, browser provisioning and quality gates. No code was pushed, no deployment was performed, and no external issues, milestones or pull requests were created during the revised scope implementation.
 
 Remaining work: collect permissioned, independently verified shop data; configure production database runtime permissions/TLS and the real site origin; address the development dependency advisory when a patched package exists. The implemented public browsing flow has no infrastructure blocker locally.
+
+## City guide redesign verification — 12 October 2026
+
+This later redesign supersedes the earlier frontend design description above. Full implementation, source provenance, limitations and incremental commit record are in [redesign-report.md](redesign-report.md).
+
+Verified: 22 unit tests, 7 PostgreSQL integration tests, 11 production Chromium scenarios, ESLint, TypeScript, Prettier, production build and production dependency audit (no known vulnerabilities). Responsive assertions now also include 360px. Both themes and loaded mobile Leaflet map pass axe checks; geographic pin overlap caught during mobile testing was corrected. No destructive database changes, schema changes, imported shops or remote deployment occurred.

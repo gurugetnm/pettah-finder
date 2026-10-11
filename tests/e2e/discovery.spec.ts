@@ -24,7 +24,9 @@ test("product discovery journey", async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Google Maps directions/ }),
+    page
+      .locator(".detail-actions")
+      .getByRole("link", { name: /Google Maps directions/ }),
   ).toHaveAttribute("href", /google\.com\/maps\/dir\/\?api=1&destination=/);
 });
 test("categories, filters, empty states and missing routes", async ({
@@ -82,7 +84,7 @@ test("mobile navigation and theme persistence", async ({ page }) => {
   ).toHaveCount(0);
 });
 test("all target widths avoid horizontal overflow", async ({ page }) => {
-  for (const width of [320, 375, 390, 430, 768, 1024, 1440]) {
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     for (const path of [
       "/",
@@ -207,6 +209,7 @@ test("public shop details and visibility rules with isolated fixtures", async ({
         expect(result.violations, `${path} in ${theme} mode`).toEqual([]);
       }
       await page.evaluate(() => document.fonts.ready);
+      await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
         path: `.local/screenshots/shop-390-${theme}.png`,
         fullPage: true,
@@ -251,6 +254,7 @@ test("visual review captures", async ({ page }) => {
       await page.goto(path);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
+      await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
         path: `.local/screenshots/${name}-${width}-${theme}.png`,
         fullPage: true,
@@ -323,4 +327,46 @@ test("keyboard skip link and menu dismissal restore useful focus", async ({
   await expect(
     page.getByRole("group", { name: "Colour theme" }),
   ).not.toBeVisible();
+});
+
+test("street map filters, source-backed markers and directions work", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Explore the street map" }).click();
+  await expect(page.locator(".leaflet-container")).toBeVisible();
+  await expect(page.locator(".leaflet-marker-icon")).toHaveCount(6);
+  await page
+    .getByRole("combobox", { name: "What are you shopping for?" })
+    .selectOption("jewellery");
+  await expect(page.locator(".leaflet-marker-icon")).toHaveCount(1);
+  await page.locator(".leaflet-marker-icon").click();
+  await expect(page.locator(".leaflet-popup-content")).toContainText(
+    "Sea Street",
+  );
+  await expect(
+    page
+      .locator(".leaflet-popup-content")
+      .getByRole("link", { name: "Google Maps directions" }),
+  ).toHaveAttribute("href", /destination=Sea/);
+  await page
+    .locator(".leaflet-popup-content")
+    .getByRole("link", { name: "Explore street" })
+    .click();
+  await expect(page).toHaveURL(/streets\/sea-street/);
+});
+
+test("loaded map remains accessible in both themes", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const theme of ["light", "dark"]) {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Change colour theme" }).click();
+    await page.getByRole("button", { name: `Use ${theme} theme` }).click();
+    await page.getByRole("button", { name: "Explore the street map" }).click();
+    await expect(page.locator(".leaflet-container")).toBeVisible();
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa", "best-practice"])
+      .analyze();
+    expect(result.violations).toEqual([]);
+  }
 });

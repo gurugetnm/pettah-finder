@@ -1,36 +1,29 @@
-# Public design system
+# Public city guide design system
 
-The redesign continues the existing App Router, repositories, Prisma models and routes. It addresses the illustration-heavy homepage, competing banners, inconsistent card treatments and category-first results by putting product search and street discovery first.
+The city guide redesign continues the Next.js 16.4 App Router, PostgreSQL/Prisma repositories, normalized search, category relationships and public shop visibility rules. No schema, authentication or administration scope was introduced.
 
 ## Visual language
 
-| Token          | Light     | Dark      |
-| -------------- | --------- | --------- |
-| Background     | `#fcfaf7` | `#1b1b18` |
-| Text           | `#292722` | `#f3eee5` |
-| Accent         | `#a83e1b` | `#f0a578` |
-| Secondary text | `#706a60` | `#b9b1a4` |
-| Card           | `#fffdf9` | `#22221e` |
-| Border         | `#e7e0d6` | `#39372f` |
+Warm paper (`#faf9f6`), ink (`#171717`), white surfaces and a contrast-safe terracotta (`#b34220`) frame authentic neighbourhood photography. The supplied orange direction is adjusted for readable text/buttons. Dark mode uses charcoal/olive surfaces, warm light text and peach actions, including map surfaces and controls. DM Sans and Plus Jakarta Sans remain self-hosted with OFL notices. Content spans up to 1328px, with 16–32px responsive gutters. Cards use 16–20px corners, restrained borders and visible focus states. Motion respects reduced-motion preferences.
 
-Shared tokens live in `src/app/globals.css` and are exposed to Tailwind. Major spacing follows an 8px scale; compact typography and icon gaps use smaller optical adjustments. Cards use 12px corners, controls 8px, subtle borders and restrained hover/focus states. No gradients or decorative image downloads are needed.
+## Discovery hierarchy
 
-Plus Jakarta Sans supplies headings and DM Sans supplies body text. Two Latin variable WOFF2 assets are served by Next locally with font swapping and fallback metrics. Fontsource packages are locked with the application; both fonts use SIL OFL 1.1 with public license notices. Adding another language requires appropriate font subsets and reviewed translations.
+- Home: split photo/search hero, native GET search, suggestion links, four featured illustrated categories, remaining categories as compact browse links, geographic street cards and a filterable map explorer.
+- Categories: all database categories with names/descriptions and working links to filtered streets. Original icon compositions are generic illustrations, not invented product/shop photographs.
+- Streets: real category relations, original descriptions, geographic illustrations and separate explore/directions actions. Illustrations use source road geometry rather than repeating an unrelated photograph across named streets.
+- Search: existing query parsing/aliases and result ordering retained; readable cards for streets, categories and verified shops. An explicit qualified state explains when no verified shops match.
+- Street guide: breadcrumbs, primary directions, local road illustration, categories/products, existing verified shop access, map and related streets selected from shared category relations.
+- Shops: existing factual directory/filters/details and honest empty states retained; improved shared typography and card styling.
+- Credits: public photography source/author/license/transformations and OSM attribution linked from photo and footer.
 
-## Page hierarchy
+## Interactive mapping
 
-- Home: local identity, confident headline, product search, compact suggestions, category grid, three featured streets, three practical discovery steps and minimal footer.
-- Search: query heading and the shared form, matching streets first, associated categories, available public shops and useful empty/invalid-query feedback.
-- Directories: consistent headings, shared cards and shareable native GET filters. No unnecessary filter controls appear on search.
-- Street/shop detail: breadcrumbs, clear identity and prominent Maps action, followed by factual categories, related products and shop/location information. Missing business data remains explicitly unavailable.
-- Feedback: matching loading, empty, error and missing-page surfaces preserve the same tokens and type scale.
+`StreetExplorer` provides accessible category and street controls, a selected details panel, directions and lazy map activation. `StreetMap` is a client-only dynamic React Leaflet component. It renders a local ODbL road snapshot, needs no provider key, sends no tile/geolocation requests and keeps map attribution visible. Coordinates are source-backed representative street points; stored valid database coordinates take precedence. Unknown streets remain discoverable without fabricated pins. Source records and limitations are in [data-sources.md](data-sources.md).
 
-Header navigation stays minimal on desktop; mobile exposes search, streets, categories and shops. Light/dark/system choices are in a compact keyboard-accessible disclosure. Escape restores focus to its trigger. Native GET forms and normal links retain the existing URL behaviour.
+The map supports marker popups, selected-road highlighting, a selected-street label and zoom controls. Desktop allows panning, while coarse-pointer devices use the street list and zoom controls; scroll-wheel zoom is disabled to prevent scroll trapping. Mobile uses a closer initial zoom to keep neighbouring targets separate. Chunk failures produce a useful retry/directions fallback.
 
-## Mobile and accessibility
+## Responsive and accessible behaviour
 
-Layout gutters shrink from 32px to 24px and then 16px at narrow widths. Category tiles move from six columns to four, three and two; street cards move from three to two to one. Search inputs use 16px text and comfortable controls; native filters wrap vertically. Detail directions appear before long content on mobile. Sticky navigation includes top safe-area padding, and the footer respects the bottom safe area.
+The mobile hero places search before the photograph. Four featured categories become two columns; secondary links wrap. Street grids move from three columns to two to one. The homepage shows three featured streets on mobile, with all streets available through its directory link and explorer. Lists and map stack, with a 320px map height. Controls use comfortable target sizes and inputs use 16px text. Navigation, theme disclosure, skip link and Escape focus behaviour remain supported.
 
-Focus rings, semantic landmarks, a working skip link, descriptive outbound Maps labels and reduced-motion preferences are shared across pages. Playwright asserts no horizontal overflow at seven widths from 320px to 1440px; isolated shop fixtures additionally cover narrow/detail layouts. Axe checks exercise both themes across public pages, including shop fixtures and empty/404 states. These automated checks complement visual review and do not constitute comprehensive accessibility certification.
-
-See [testing](testing.md) and [actual verification results](verification.md).
+Playwright checks all requested widths (320, 360, 375, 390, 430, 768px), plus 1024 and 1440px. Axe exercises both themes, including the loaded mobile map. These checks complement manual screenshot review; they are not comprehensive accessibility certification or physical-device testing.

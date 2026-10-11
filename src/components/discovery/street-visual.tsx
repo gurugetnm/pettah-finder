@@ -14,25 +14,33 @@ export function StreetVisual({ slug, name }: { slug: string; name: string }) {
     >
       {location ? (
         <svg viewBox="0 0 400 160" aria-hidden="true">
-          {roads.map((road) => (
-            <polyline
-              key={road.id}
-              points={road.points
-                .map(
-                  ([lat, lon]) =>
-                    `${200 + (lon - location.point[1]) * 75000},${80 - (lat - location.point[0]) * 75000}`,
-                )
-                .join(" ")}
-              fill="none"
-              stroke={
-                road.name === location.sourceName
-                  ? "var(--primary)"
-                  : "var(--map-road)"
-              }
-              strokeWidth={road.name === location.sourceName ? 7 : 3}
-              strokeLinecap="round"
-            />
-          ))}
+          {roads
+            .filter((road) =>
+              road.points.some(
+                ([lat, lon]) =>
+                  Math.abs(lon - location.point[1]) < 0.003 &&
+                  Math.abs(lat - location.point[0]) < 0.0016,
+              ),
+            )
+            .map((road) => (
+              <polyline
+                key={road.id}
+                points={road.points
+                  .map(
+                    ([lat, lon]) =>
+                      `${200 + (lon - location.point[1]) * 75000},${80 - (lat - location.point[0]) * 75000}`,
+                  )
+                  .join(" ")}
+                fill="none"
+                stroke={
+                  road.name === location.sourceName
+                    ? "var(--primary)"
+                    : "var(--map-road)"
+                }
+                strokeWidth={road.name === location.sourceName ? 7 : 3}
+                strokeLinecap="round"
+              />
+            ))}
           <circle
             cx="200"
             cy="80"
@@ -47,7 +55,9 @@ export function StreetVisual({ slug, name }: { slug: string; name: string }) {
         <MapPlaceholder />
       )}
       <span className="street-visual-label">
-        {location ? "Street at a glance" : "Street photography coming soon"}
+        {location
+          ? "© OpenStreetMap contributors"
+          : "Street photography coming soon"}
       </span>
     </div>
   );

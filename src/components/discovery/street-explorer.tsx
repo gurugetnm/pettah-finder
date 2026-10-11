@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Component, useState, type ReactNode } from "react";
+import { Component, useMemo, useState, type ReactNode } from "react";
 import { ArrowRight, MapPin, Map } from "lucide-react";
 import { DirectionsLink } from "./directions-link";
 export type MapStreet = {
@@ -23,8 +23,12 @@ export function StreetExplorer({ streets }: { streets: MapStreet[] }) {
   const [category, setCategory] = useState("");
   const [selected, setSelected] = useState(streets[0]?.slug ?? "");
   const [load, setLoad] = useState(false);
-  const visible = streets.filter(
-    (s) => !category || s.categories.some((c) => c.slug === category),
+  const visible = useMemo(
+    () =>
+      streets.filter(
+        (s) => !category || s.categories.some((c) => c.slug === category),
+      ),
+    [streets, category],
   );
   const active = visible.find((s) => s.slug === selected) ?? visible[0];
   const categories = Array.from(

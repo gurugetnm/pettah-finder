@@ -78,7 +78,7 @@ async function HomeContent() {
           <div className="section-heading">
             <div>
               <span className="eyebrow">The neighbourhood guide</span>
-              <h2 id="streets-title">Six streets. Endless discoveries.</h2>
+              <h2 id="streets-title">Your next find starts on a street.</h2>
               <p>
                 Different streets, different finds. Get to know the
                 neighbourhood.

@@ -1,6 +1,13 @@
 "use client";
 import { useEffect } from "react";
-import { MapContainer, Polyline, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  Polyline,
+  Marker,
+  Popup,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import { divIcon, latLngBounds } from "leaflet";
 import roads from "@/data/pettah-roads.json";
 import type { MapStreet } from "./street-explorer";
@@ -10,8 +17,8 @@ const markerIcon = (active: boolean) =>
   divIcon({
     className: "street-pin-wrapper",
     html: `<span class="street-pin${active ? " selected" : ""}" aria-hidden="true">↗</span>`,
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
+    iconSize: [44, 44],
+    iconAnchor: [22, 22],
   });
 function View({
   streets,
@@ -28,6 +35,8 @@ function View({
         maxZoom: 17,
         animate: false,
       });
+    if (globalThis.matchMedia("(max-width: 767px)").matches)
+      map.setZoom(Math.max(map.getZoom(), 18), { animate: false });
   }, [map, streets]);
   useEffect(() => {
     const street = streets.find((s) => s.slug === selected);
@@ -64,7 +73,10 @@ export default function StreetMap({
             key={road.id}
             positions={road.points as [number, number][]}
             pathOptions={{
-              color: road.name === selectedName ? "#b34220" : "#c2bcae",
+              color:
+                road.name === selectedName
+                  ? "var(--primary)"
+                  : "var(--map-road)",
               weight: road.name === selectedName ? 6 : 3,
               opacity: 1,
             }}
@@ -81,6 +93,11 @@ export default function StreetMap({
               alt={`Select ${s.name}`}
               eventHandlers={{ click: () => onSelect(s.slug) }}
             >
+              {s.slug === selected && (
+                <Tooltip permanent direction="top" offset={[0, -20]}>
+                  {s.name}
+                </Tooltip>
+              )}
               <Popup>
                 <strong>{s.name}</strong>
                 <p>{s.categories.map((c) => c.name).join(" · ")}</p>

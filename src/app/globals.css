@@ -2053,3 +2053,65 @@ p {
     transform: none;
   }
 }
+.search-form button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .streets-section .street-card:nth-child(n + 4) {
+    display: none;
+  }
+}
+.street-pin {
+  width: 44px;
+  height: 44px;
+}
+.leaflet-touch .leaflet-bar a,
+.leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+}
+.leaflet-tooltip {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 13px;
+  padding: 8px 12px;
+  box-shadow: 0 3px 12px #0001;
+}
+.leaflet-tooltip-top:before {
+  border-top-color: var(--card);
+}
+.map-canvas .leaflet-street-map {
+  background: var(--map-surface);
+}
+.map-canvas .leaflet-popup-content-wrapper,
+.map-canvas .leaflet-tooltip {
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+.map-canvas .leaflet-popup-tip {
+  background: var(--card);
+}
+.map-canvas .leaflet-tooltip-top:before {
+  border-top-color: var(--card);
+}
+.map-canvas .leaflet-container .leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  background: var(--card);
+  color: var(--foreground);
+}
+.map-canvas .street-pin {
+  background: var(--card);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.map-canvas .street-pin.selected {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}

@@ -89,7 +89,29 @@ model Shop {
   updatedAt          DateTime @updatedAt
   categories         ShopCategory[]
   products           ShopProduct[]
+  sources            ShopSource[]
   @@index([streetId, publicationStatus])
+}
+// Provenance for imported shop data; (source, sourceRecordId) keeps imports idempotent.
+model ShopSource {
+  id                   String @id @default(cuid())
+  shopId               String
+  shop                 Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  source               String
+  sourceRecordId       String
+  sourceUrl            String?
+  license              String
+  attribution          String
+  attributionUrl       String?
+  datasetVersion       String?
+  locationPrecision    String
+  verificationEvidence String?
+  rawTags              Json?
+  history              Json @default("[]")
+  importedAt           DateTime @default(now())
+  lastCheckedAt        DateTime
+  @@unique([source, sourceRecordId])
+  @@index([shopId])
 }
 model ShopCategory {
   shopId     String

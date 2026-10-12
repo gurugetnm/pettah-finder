@@ -38,3 +38,10 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => false,
   }),
 });
+// jsdom has no layout engine; components only use ResizeObserver to re-measure.
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+Element.prototype.setPointerCapture ??= () => {};

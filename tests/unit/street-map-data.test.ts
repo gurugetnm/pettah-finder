@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { streetMapData, validPettahPoint } from "@/lib/utils/street-map-data";
+import {
+  shopMapData,
+  streetMapData,
+  validPettahPoint,
+} from "@/lib/utils/street-map-data";
+import type { PublicShop } from "@/features/discovery/shops";
 import { tileConfiguration } from "@/lib/maps/tile-provider";
 import locations from "@/data/street-locations.json";
 import type { StreetSummary } from "@/features/discovery/repository";
@@ -62,6 +67,29 @@ describe("street map data provenance", () => {
     expect(
       streetMapData([street("sea-street", "Different Sea Street")])[0].point,
     ).toBeNull();
+  });
+});
+describe("shop map data", () => {
+  const shop = (latitude: unknown, longitude: unknown) =>
+    ({
+      slug: "s",
+      name: "S",
+      street: { name: "Sea Street", slug: "sea-street" },
+      categories: [],
+      contactPhone: null,
+      latitude,
+      longitude,
+    }) as unknown as PublicShop;
+  it("plots only shops with their own valid Pettah coordinates", () => {
+    expect(shopMapData([shop("6.938100", "79.854100")])[0].point).toEqual([
+      6.9381, 79.8541,
+    ]);
+    for (const [lat, lon] of [
+      [null, null],
+      ["6.9381", null],
+      ["51.5", "-0.12"],
+    ])
+      expect(shopMapData([shop(lat, lon)])[0].point).toBeNull();
   });
 });
 describe("tile provider configuration", () => {

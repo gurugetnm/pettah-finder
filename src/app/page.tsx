@@ -1,3 +1,4 @@
+import { getTileConfiguration } from "@/lib/maps/tile-provider";
 import { StreetExplorer } from "@/components/discovery/street-explorer";
 import { streetMapData } from "@/lib/utils/street-map-data";
 import { MarketPhoto } from "@/components/discovery/market-photo";
@@ -107,7 +108,10 @@ async function HomeContent() {
               <p>Choose a category. Find a street. Make it your next stop.</p>
             </div>
           </div>
-          <StreetExplorer streets={streetMapData(streets)} />
+          <StreetExplorer
+            streets={streetMapData(streets)}
+            tiles={getTileConfiguration()}
+          />
         </section>
       </div>
     </>

@@ -1,8 +1,17 @@
 "use client";
+import type { TileConfiguration } from "@/lib/maps/tile-provider";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Component, useMemo, useState, type ReactNode } from "react";
-import { ArrowRight, MapPin, Map } from "lucide-react";
+import {
+  Component,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { DirectionsLink } from "./directions-link";
 export type MapStreet = {
   slug: string;
@@ -19,10 +28,33 @@ const StreetMap = dynamic(() => import("./street-map"), {
     </div>
   ),
 });
-export function StreetExplorer({ streets }: { streets: MapStreet[] }) {
+export function StreetExplorer({
+  streets,
+  tiles,
+}: {
+  streets: MapStreet[];
+  tiles: TileConfiguration;
+}) {
   const [category, setCategory] = useState("");
   const [selected, setSelected] = useState(streets[0]?.slug ?? "");
   const [load, setLoad] = useState(false);
+  const mapArea = useRef<HTMLDivElement>(null);
+  const categoryId = useId();
+  useEffect(() => {
+    const area = mapArea.current;
+    if (!area) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "120px" },
+    );
+    observer.observe(area);
+    return () => observer.disconnect();
+  }, []);
   const visible = useMemo(
     () =>
       streets.filter(
@@ -39,9 +71,9 @@ export function StreetExplorer({ streets }: { streets: MapStreet[] }) {
   return (
     <div className="street-explorer">
       <div className="explorer-sidebar">
-        <label htmlFor="map-category">What are you shopping for?</label>
+        <label htmlFor={categoryId}>What are you shopping for?</label>
         <select
-          id="map-category"
+          id={categoryId}
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -90,28 +122,19 @@ export function StreetExplorer({ streets }: { streets: MapStreet[] }) {
           </div>
         )}
       </div>
-      <div className="explorer-map-area">
+      <div className="explorer-map-area" ref={mapArea}>
         {load ? (
           <MapBoundary>
             <StreetMap
+              tiles={tiles}
               streets={visible}
               selected={active?.slug}
               onSelect={setSelected}
             />
           </MapBoundary>
         ) : (
-          <div className="map-preview">
-            <Map size={44} strokeWidth={1.2} />
-            <h3>Find your bearings.</h3>
-            <p>See the shopping streets together and choose where to start.</p>
-            <button
-              type="button"
-              className="map-load-button"
-              onClick={() => setLoad(true)}
-            >
-              Explore the street map <ArrowRight size={18} />
-            </button>
-            <small>A local road map. No location permission needed.</small>
+          <div className="map-loading" role="status">
+            Loading the Pettah map…
           </div>
         )}
         <p className="map-caption">

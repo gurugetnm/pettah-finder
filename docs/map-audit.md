@@ -1,0 +1,7 @@
+# Real map investigation — 12 October 2026
+
+The existing explorer has a client-only Leaflet map, loaded only after a manual button click. Before activation browser inspection showed zero map containers and zero tile requests. After activation it showed a valid 440px map and no browser errors, but zero tile images/requests: only `Polyline` layers from the local road snapshot. Street cards separately rendered SVG road illustrations, and the initial screen used a CSS diagonal pattern. There was no `TileLayer`, no tile failure handling, and mobile dragging was explicitly disabled. Existing CSP `img-src 'self' data:` would have blocked any external tile images.
+
+This is an implementation limitation, not a missing Leaflet package, height, CSS, z-index, hydration or credential error. React Leaflet 5.0.0/Leaflet 1.9.4 are already installed. The local Next.js App Router lazy-loading guide was reread. The replacement will preserve the redesigned site, repositories and data pipeline, and isolate browser-dependent mapping through the existing dynamic client boundary.
+
+OSM Standard is permitted for low-volume localhost viewing under its current tile policy; public production origin must use an explicitly configured provider. CARTO Basemaps offers a public client key and documented commercial/noncommercial allowances. Native browser tile requests retain Referer and caching headers. Automated interaction tests must intercept tile requests rather than repeatedly downloading/panning public tiles. Real loading verification is a limited actual viewport check.

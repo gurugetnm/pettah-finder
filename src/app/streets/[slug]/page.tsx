@@ -1,3 +1,4 @@
+import { getTileConfiguration } from "@/lib/maps/tile-provider";
 import { StreetExplorer } from "@/components/discovery/street-explorer";
 import { streetMapData } from "@/lib/utils/street-map-data";
 import { StreetVisual } from "@/components/discovery/street-visual";
@@ -148,7 +149,10 @@ export default async function StreetDetail({
         <div className="section-heading">
           <h2 id="street-map-title">Find this street</h2>
         </div>
-        <StreetExplorer streets={streetMapData([street])} />
+        <StreetExplorer
+          streets={streetMapData([street])}
+          tiles={getTileConfiguration()}
+        />
       </section>
       {related.length > 0 && (
         <section className="section">

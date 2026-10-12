@@ -1,5 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+// Deterministic browser fixtures; no public tile-server traffic during interaction/width sweeps.
+import { tileFixture } from "./helpers/map-tiles";
+test.beforeEach(async ({ page }) => {
+  await page.route("https://tile.openstreetmap.org/**", (route) =>
+    route.fulfill({ contentType: "image/png", body: tileFixture }),
+  );
+});
+
 test("product discovery journey", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
@@ -333,8 +341,9 @@ test("street map filters, source-backed markers and directions work", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore the street map" }).click();
+  await page.locator(".explorer-map-area").scrollIntoViewIfNeeded();
   await expect(page.locator(".leaflet-container")).toBeVisible();
+  await expect(page.locator(".leaflet-tile-loaded").first()).toBeVisible();
   await expect(page.locator(".leaflet-marker-icon")).toHaveCount(6);
   await page
     .getByRole("combobox", { name: "What are you shopping for?" })
@@ -362,7 +371,7 @@ test("loaded map remains accessible in both themes", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: "Change colour theme" }).click();
     await page.getByRole("button", { name: `Use ${theme} theme` }).click();
-    await page.getByRole("button", { name: "Explore the street map" }).click();
+    await page.locator(".explorer-map-area").scrollIntoViewIfNeeded();
     await expect(page.locator(".leaflet-container")).toBeVisible();
     const result = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa", "best-practice"])

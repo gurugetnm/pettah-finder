@@ -1543,7 +1543,8 @@ p {
   padding-inline: 16px;
 }
 .map-app {
-  --header-h: calc(64px + env(safe-area-inset-top));
+  /* 64px header row plus its 1px bottom border. */
+  --header-h: calc(65px + env(safe-area-inset-top));
   --map-top-inset: 0px;
   position: relative;
   isolation: isolate;
@@ -2013,7 +2014,7 @@ p {
 }
 @media (max-width: 767px) {
   .map-app {
-    --map-top-inset: 72px;
+    --map-top-inset: 84px;
     display: block;
   }
   .app-map {

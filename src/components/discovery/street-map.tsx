@@ -46,11 +46,18 @@ function insets(map: LeafletMap) {
   const style = getComputedStyle(map.getContainer());
   return {
     top: parseFloat(style.getPropertyValue("--map-top-inset")) || 0,
-    bottom: parseFloat(style.getPropertyValue("--map-bottom-inset")) || 0,
+    // An expanded sheet would leave no room to fit; keep some map visible instead.
+    bottom: Math.min(
+      parseFloat(style.getPropertyValue("--map-bottom-inset")) || 0,
+      map.getSize().y * 0.6,
+    ),
   };
 }
+// Leaflet silently drops view changes requested mid zoom-animation, so they are retried once it settles.
 function fit(map: LeafletMap, points: [number, number][], maxZoom = 17) {
   if (!points.length) return;
+  if (map.getPane("mapPane")?.classList.contains("leaflet-zoom-anim"))
+    return void map.once("zoomend", () => fit(map, points, maxZoom));
   const { top, bottom } = insets(map);
   map.fitBounds(latLngBounds(points), {
     paddingTopLeft: [40, top + 40],
@@ -60,6 +67,8 @@ function fit(map: LeafletMap, points: [number, number][], maxZoom = 17) {
   });
 }
 function focusPoint(map: LeafletMap, point: [number, number], minZoom: number) {
+  if (map.getPane("mapPane")?.classList.contains("leaflet-zoom-anim"))
+    return void map.once("zoomend", () => focusPoint(map, point, minZoom));
   const zoom = Math.max(map.getZoom(), minZoom);
   const { top, bottom } = insets(map);
   const center = map.unproject(
@@ -126,6 +135,7 @@ export default function StreetMap({
   selection,
   onSelect,
   tiles,
+  bottomInset = 0,
 }: {
   streets: MapStreet[];
   shops?: MapShop[];
@@ -134,6 +144,8 @@ export default function StreetMap({
   selection: Selection;
   onSelect: (selection: NonNullable<Selection>) => void;
   tiles: TileConfiguration;
+  /** Height of the mobile sheet covering the map; 0 on desktop. */
+  bottomInset?: number;
 }) {
   const [map, setMap] = useState<LeafletMap | null>(null);
   const allPoints = useMemo(
@@ -165,7 +177,8 @@ export default function StreetMap({
     if (street?.geometry) fit(map, street.geometry, 18);
     else if (street?.point) focusPoint(map, street.point, 17);
     else if (shop?.point) focusPoint(map, shop.point, 18);
-  }, [map, street, shop]);
+    // bottomInset: re-frame the selection whenever the mobile sheet changes size.
+  }, [map, street, shop, bottomInset]);
   useEffect(() => {
     if (!map) return;
     const observer = new ResizeObserver(() =>
@@ -196,6 +209,9 @@ export default function StreetMap({
         minZoom={14}
         maxZoom={tiles.maxZoom}
         zoomControl={false}
+        zoomAnimation={animate()}
+        fadeAnimation={animate()}
+        markerZoomAnimation={animate()}
         attributionControl
         className="leaflet-street-map"
       >
@@ -207,10 +223,11 @@ export default function StreetMap({
             const pinState = state(s.slug, s.slug === street?.slug);
             return (
               <Polyline
+                // className is a construction-time Leaflet option (setStyle ignores it), hence the state in the key.
                 key={`${s.slug}-${pinState}`}
+                className={`street-line ${pinState}`}
                 positions={s.geometry!}
                 pathOptions={{
-                  className: `street-line ${pinState}`,
                   weight:
                     pinState === "selected" ? 7 : pinState === "muted" ? 3 : 5,
                 }}

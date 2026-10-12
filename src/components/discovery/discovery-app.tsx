@@ -63,6 +63,7 @@ export function DiscoveryApp({
   const params = useSearchParams();
   const [sheet, setSheet] = useState<Sheet>(query ? "half" : "collapsed");
   const [panelOpen, setPanelOpen] = useState(true);
+  const [sheetInset, setSheetInset] = useState(0);
   const [searched, setSearched] = useState(query);
   if (searched !== query) {
     setSearched(query);
@@ -131,11 +132,13 @@ export function DiscoveryApp({
     const sheetElement = panel.current;
     if (!root || !sheetElement) return;
     const mobile = window.matchMedia("(max-width: 767px)");
-    const update = () =>
-      root.style.setProperty(
-        "--map-bottom-inset",
-        mobile.matches ? `${sheetElement.offsetHeight}px` : "0px",
-      );
+    const update = () => {
+      const inset = mobile.matches
+        ? Math.ceil(sheetElement.getBoundingClientRect().height)
+        : 0;
+      root.style.setProperty("--map-bottom-inset", `${inset}px`);
+      setSheetInset(inset);
+    };
     const observer = new ResizeObserver(update);
     observer.observe(sheetElement);
     mobile.addEventListener("change", update);
@@ -461,6 +464,7 @@ export function DiscoveryApp({
             focus={focus}
             selection={selection}
             onSelect={select}
+            bottomInset={sheetInset}
           />
         </MapBoundary>
       </div>

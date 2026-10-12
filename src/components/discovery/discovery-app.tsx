@@ -118,7 +118,9 @@ export function DiscoveryApp({
   const streetSlug = params.get("street");
   const shop = shopSlug ? shops.find((s) => s.slug === shopSlug) : undefined;
   const street =
-    !shop && streetSlug ? streets.find((s) => s.slug === streetSlug) : undefined;
+    !shop && streetSlug
+      ? streets.find((s) => s.slug === streetSlug)
+      : undefined;
   const selection: Selection = shop
     ? { kind: "shop", slug: shop.slug }
     : street
@@ -165,7 +167,9 @@ export function DiscoveryApp({
   const step = (by: number) =>
     setSheet(
       (s) =>
-        sheets[Math.min(sheets.length - 1, Math.max(0, sheets.indexOf(s) + by))],
+        sheets[
+          Math.min(sheets.length - 1, Math.max(0, sheets.indexOf(s) + by))
+        ],
     );
   function onHandleKey(event: KeyboardEvent) {
     if (event.key === "ArrowUp" || event.key === "ArrowDown") {
@@ -176,15 +180,10 @@ export function DiscoveryApp({
   const streetShops = street
     ? shops.filter((s) => s.street.slug === street.slug)
     : [];
-  const noResults =
-    !!query && !visibleStreets.length && !visibleShops.length;
-  const summary = shop
-    ? shop.name
-    : street
-      ? street.name
-      : noResults
-        ? `No results for “${query}”`
-        : `${visibleStreets.length} ${visibleStreets.length === 1 ? "street" : "streets"} · ${visibleShops.length} verified ${visibleShops.length === 1 ? "shop" : "shops"}${query ? ` for “${query}”` : ""}`;
+  const noResults = !!query && !visibleStreets.length && !visibleShops.length;
+  const summary = noResults
+    ? `No results for “${query}”`
+    : `${visibleStreets.length} ${visibleStreets.length === 1 ? "street" : "streets"} · ${visibleShops.length} verified ${visibleShops.length === 1 ? "shop" : "shops"}${query ? ` for “${query}”` : ""}`;
   return (
     <div
       ref={app}
@@ -338,7 +337,9 @@ export function DiscoveryApp({
                         <button
                           type="button"
                           aria-pressed={s.slug === street?.slug}
-                          onClick={() => select({ kind: "street", slug: s.slug })}
+                          onClick={() =>
+                            select({ kind: "street", slug: s.slug })
+                          }
                         >
                           <MapPin size={18} aria-hidden="true" />
                           <span>

@@ -50,10 +50,7 @@ async function SearchContent({
         <EmptySearch query={query} />
       ) : (
         <>
-          <Link
-            className="text-link"
-            href={`/?q=${encodeURIComponent(query)}`}
-          >
+          <Link className="text-link" href={`/?q=${encodeURIComponent(query)}`}>
             <MapPin size={17} /> Show these results on the map
           </Link>
           {data.streets.length > 0 && (

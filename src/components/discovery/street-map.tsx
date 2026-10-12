@@ -285,8 +285,8 @@ export default function StreetMap({
       </div>
       {!allPoints.length && (
         <p className="map-no-points" role="status">
-          Locations are not available for these streets. Use the result list
-          and name-based directions.
+          Locations are not available for these streets. Use the result list and
+          name-based directions.
         </p>
       )}
     </div>

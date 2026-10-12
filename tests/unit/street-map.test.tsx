@@ -5,7 +5,7 @@ it("shows explicit provider failure without substituting a decorative map", () =
   const { container } = render(
     <StreetMap
       streets={[]}
-      selected={undefined}
+      selection={null}
       onSelect={() => {}}
       tiles={{
         provider: "unconfigured",

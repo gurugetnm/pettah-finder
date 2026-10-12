@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Info } from "lucide-react";
+import { Info, MapPin } from "lucide-react";
 import { discovery } from "@/features/discovery/repository";
 import { StreetGrid } from "@/components/discovery/cards";
 import { slugSchema } from "@/lib/validations/search";
@@ -55,6 +55,12 @@ export default async function Streets({
           </Link>
         ))}
       </nav>
+      <Link
+        className="text-link"
+        href={parsed.data ? `/?category=${parsed.data}` : "/"}
+      >
+        <MapPin size={17} /> View on the map
+      </Link>
       <StreetGrid streets={streets} headingLevel={2} />
       {!streets.length && (
         <div className="empty-state">

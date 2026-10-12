@@ -1,7 +1,23 @@
 import locations from "@/data/street-locations.json";
 import roads from "@/data/pettah-roads.json";
 import type { StreetSummary } from "@/features/discovery/repository";
-import type { MapStreet } from "@/components/discovery/street-explorer";
+import type { PublicShop } from "@/features/discovery/shops";
+export type MapStreet = {
+  slug: string;
+  name: string;
+  description: string;
+  categories: { name: string; slug: string }[];
+  point: [number, number] | null;
+  geometry?: [number, number][];
+};
+export type MapShop = {
+  slug: string;
+  name: string;
+  street: { name: string; slug: string };
+  categories: { name: string; slug: string }[];
+  phone: string | null;
+  point: [number, number] | null;
+};
 // Regional validation prevents corrupt/global coordinates from moving the Pettah map elsewhere.
 export function validPettahPoint(
   lat: number | null,
@@ -54,4 +70,21 @@ export function streetMapData(streets: StreetSummary[]): MapStreet[] {
       geometry: road?.points as [number, number][] | undefined,
     };
   });
+}
+// Only published, verified shops reach here (publicShopWhere); a shop is plotted only with its own valid coordinates.
+export function shopMapData(shops: PublicShop[]): MapShop[] {
+  return shops.map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    street: s.street,
+    categories: s.categories.map(({ category }) => ({
+      name: category.name,
+      slug: category.slug,
+    })),
+    phone: s.contactPhone,
+    point: validPettahPoint(
+      s.latitude === null ? null : Number(s.latitude),
+      s.longitude === null ? null : Number(s.longitude),
+    ),
+  }));
 }

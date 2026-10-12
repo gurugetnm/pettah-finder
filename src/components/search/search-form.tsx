@@ -1,14 +1,17 @@
+import Form from "next/form";
 import { Search, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 export function SearchForm({
   defaultValue = "",
   id = "product-search",
+  action = "/search",
 }: {
   defaultValue?: string;
   id?: string;
+  action?: string;
 }) {
   return (
-    <form action="/search" role="search" className="search-form">
+    <Form action={action} role="search" className="search-form">
       <label htmlFor={id} className="sr-only">
         What are you shopping for?
       </label>
@@ -26,7 +29,7 @@ export function SearchForm({
         <span>Find it</span>
         <ArrowRight size={18} />
       </Button>
-    </form>
+    </Form>
   );
 }
 export function EmptySearch({ query }: { query?: string }) {

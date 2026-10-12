@@ -70,6 +70,7 @@ describe("tile provider configuration", () => {
       provider: "osm-standard",
       url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     });
+    expect(tileConfiguration({ local: true })).not.toHaveProperty("darkUrl");
     expect(
       tileConfiguration({ local: false, provider: "osm-standard" }).provider,
     ).toBe("unconfigured");
@@ -87,6 +88,8 @@ describe("tile provider configuration", () => {
     expect(config.provider).toBe("carto");
     if (config.provider !== "unconfigured") {
       expect(config.url).toContain("?key=public_basemap_fixture");
+      expect(config.darkUrl).toContain("/dark_all/");
+      expect(config.darkUrl).toContain("?key=public_basemap_fixture");
       expect(config.attribution).toContain("OpenStreetMap");
       expect(config.attribution).toContain("CARTO");
     }

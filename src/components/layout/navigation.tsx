@@ -9,7 +9,7 @@ export function ThemeRoot({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
     >
@@ -93,7 +93,7 @@ export function Header() {
         }
       }}
     >
-      <div className="shell header-inner">
+      <div className="header-inner">
         <Link href="/" className="brand" aria-label="Pettah Finder home">
           <span className="brand-mark">
             <MapPin size={23} strokeWidth={2.4} />

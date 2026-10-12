@@ -57,61 +57,6 @@ export function CategoryCard({
     </Link>
   );
 }
-export function CategoryDiscovery({ categories }: { categories: Category[] }) {
-  const featuredSlugs = [
-    "mobile-accessories",
-    "fabrics-textiles",
-    "jewellery",
-    "lighting",
-  ];
-  const featured = featuredSlugs.flatMap((slug) =>
-    categories.filter((c) => c.slug === slug),
-  );
-  const other = categories.filter((c) => !featuredSlugs.includes(c.slug));
-  return (
-    <>
-      <div className="featured-categories">
-        {featured.map((category) => {
-          const Icon = icons[category.iconKey] ?? ShoppingBag;
-          return (
-            <Link
-              key={category.id}
-              href={`/streets?category=${category.slug}`}
-              className={`category-feature category-${category.iconKey}`}
-            >
-              <div className="category-art" aria-hidden="true">
-                <div className="art-disc" />
-                <Icon size={88} strokeWidth={1.1} />
-                <span className="art-small">
-                  <Icon size={34} strokeWidth={1.4} />
-                </span>
-              </div>
-              <div className="category-feature-copy">
-                <h3>{category.name}</h3>
-                <p>{category.description}</p>
-                <span>
-                  Find your street <ArrowRight size={16} />
-                </span>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-      <nav className="category-browse" aria-label="More shopping categories">
-        {other.map((c) => {
-          const Icon = icons[c.iconKey] ?? ShoppingBag;
-          return (
-            <Link key={c.id} href={`/streets?category=${c.slug}`}>
-              <Icon size={18} />
-              {c.name}
-              <ArrowUpRight size={14} />
-            </Link>
-          );
-        })}
-      </nav>
-    </>
-  );
-}
 export function StreetCard({
   street,
   headingLevel = 3,

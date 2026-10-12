@@ -2,6 +2,8 @@ export type TileConfiguration =
   | {
       provider: "osm-standard" | "carto";
       url: string;
+      // Real dark basemap when the provider offers one; otherwise the light tiles stay readable in dark mode.
+      darkUrl?: string;
       attribution: string;
       maxZoom: number;
     }
@@ -27,6 +29,7 @@ export function tileConfiguration({
     return {
       provider: "carto",
       url: `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${encodeURIComponent(publicKey)}`,
+      darkUrl: `https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=${encodeURIComponent(publicKey)}`,
       attribution: `${osmAttribution}, &copy; <a href="https://carto.com/attribution/">CARTO</a>`,
       maxZoom: 20,
     };

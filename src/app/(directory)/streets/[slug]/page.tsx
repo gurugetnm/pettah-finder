@@ -1,6 +1,3 @@
-import { getTileConfiguration } from "@/lib/maps/tile-provider";
-import { StreetExplorer } from "@/components/discovery/street-explorer";
-import { streetMapData } from "@/lib/utils/street-map-data";
 import { StreetVisual } from "@/components/discovery/street-visual";
 import { StreetGrid } from "@/components/discovery/cards";
 import Link from "next/link";
@@ -60,6 +57,9 @@ export default async function StreetDetail({
         <h1>{street.name}</h1>
         <p>{street.description}</p>
         <div className="detail-actions">
+          <Link className="text-link" href={`/?street=${street.slug}`}>
+            <MapPin size={17} /> View on map
+          </Link>
           <DirectionsLink destination={street.name} />
         </div>
       </div>
@@ -145,15 +145,6 @@ export default async function StreetDetail({
           </section>
         </aside>
       </div>
-      <section className="section" aria-labelledby="street-map-title">
-        <div className="section-heading">
-          <h2 id="street-map-title">Find this street</h2>
-        </div>
-        <StreetExplorer
-          streets={streetMapData([street])}
-          tiles={getTileConfiguration()}
-        />
-      </section>
       {related.length > 0 && (
         <section className="section">
           <div className="section-heading">

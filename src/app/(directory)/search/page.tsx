@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import LoadingFeedback from "@/components/layout/loading-feedback";
-import { Info } from "lucide-react";
+import { Info, MapPin } from "lucide-react";
 import { shops } from "@/features/discovery/shops";
 import { ShopCard } from "@/components/discovery/shop-card";
 import { parseQuery } from "@/lib/validations/search";
@@ -50,6 +50,12 @@ async function SearchContent({
         <EmptySearch query={query} />
       ) : (
         <>
+          <Link
+            className="text-link"
+            href={`/?q=${encodeURIComponent(query)}`}
+          >
+            <MapPin size={17} /> Show these results on the map
+          </Link>
           {data.streets.length > 0 && (
             <section>
               <h2 className="results-heading">Streets to explore</h2>

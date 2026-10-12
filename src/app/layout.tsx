@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ThemeRoot, Header } from "@/components/layout/navigation";
-import { Footer } from "@/components/layout/footer";
 import { siteUrl } from "@/lib/utils/site";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -48,7 +47,6 @@ export default function RootLayout({
           <main id="main-content" tabIndex={-1}>
             {children}
           </main>
-          <Footer />
         </ThemeRoot>
       </body>
     </html>

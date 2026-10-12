@@ -1,67 +1,20 @@
-import roads from "@/data/pettah-roads.json";
-import locations from "@/data/street-locations.json";
-export function StreetVisual({ slug, name }: { slug: string; name: string }) {
-  const location = locations[slug as keyof typeof locations];
+import { MapPin, Store } from "lucide-react";
+// Honest, lightweight neighbourhood identity while street-specific licensed photography is unavailable.
+export function StreetVisual({ name }: { slug: string; name: string }) {
   return (
     <div
-      className="street-visual"
-      aria-label={
-        location
-          ? `OpenStreetMap street illustration for ${name}`
-          : `Street photograph for ${name} pending`
-      }
+      className="street-visual street-identity"
+      aria-label={`Street guide for ${name}`}
       role="img"
     >
-      {location ? (
-        <svg viewBox="0 0 400 160" aria-hidden="true">
-          {roads
-            .filter((road) =>
-              road.points.some(
-                ([lat, lon]) =>
-                  Math.abs(lon - location.point[1]) < 0.003 &&
-                  Math.abs(lat - location.point[0]) < 0.0016,
-              ),
-            )
-            .map((road) => (
-              <polyline
-                key={road.id}
-                points={road.points
-                  .map(
-                    ([lat, lon]) =>
-                      `${200 + (lon - location.point[1]) * 75000},${80 - (lat - location.point[0]) * 75000}`,
-                  )
-                  .join(" ")}
-                fill="none"
-                stroke={
-                  road.name === location.sourceName
-                    ? "var(--primary)"
-                    : "var(--map-road)"
-                }
-                strokeWidth={road.name === location.sourceName ? 7 : 3}
-                strokeLinecap="round"
-              />
-            ))}
-          <circle
-            cx="200"
-            cy="80"
-            r="13"
-            fill="var(--primary)"
-            stroke="var(--card)"
-            strokeWidth="4"
-          />
-          <circle cx="200" cy="80" r="3" fill="var(--card)" />
-        </svg>
-      ) : (
-        <MapPlaceholder />
-      )}
-      <span className="street-visual-label">
-        {location
-          ? "© OpenStreetMap contributors"
-          : "Street photography coming soon"}
+      <Store size={48} strokeWidth={1.2} aria-hidden="true" />
+      <span>
+        <strong>Pettah, Colombo</strong>
+        <small>
+          <MapPin size={13} aria-hidden="true" />
+          Neighbourhood shopping guide
+        </small>
       </span>
     </div>
   );
-}
-function MapPlaceholder() {
-  return <span className="visual-placeholder">Pettah · Colombo</span>;
 }

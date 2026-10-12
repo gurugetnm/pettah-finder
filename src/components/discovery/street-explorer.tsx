@@ -19,6 +19,7 @@ export type MapStreet = {
   description: string;
   categories: { name: string; slug: string }[];
   point: [number, number] | null;
+  geometry?: [number, number][];
 };
 const StreetMap = dynamic(() => import("./street-map"), {
   ssr: false,
@@ -113,9 +114,14 @@ export function StreetExplorer({
           <div className="explorer-detail">
             <h3>{active.name}</h3>
             <p>{active.description}</p>
+            {!active.point && (
+              <p className="location-missing">
+                Map location pending. Directions use the street name.
+              </p>
+            )}
             <div className="explorer-actions">
               <Link className="text-link" href={`/streets/${active.slug}`}>
-                Street guide <ArrowRight size={16} />
+                Explore Street <ArrowRight size={16} />
               </Link>
               <DirectionsLink destination={active.name} compact />
             </div>

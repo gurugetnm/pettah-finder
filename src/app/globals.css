@@ -1671,27 +1671,7 @@ p {
   overflow: hidden;
   border-bottom: 1px solid var(--border);
 }
-.street-visual svg {
-  width: 100%;
-  height: 100%;
-}
-.street-visual-label {
-  position: absolute;
-  bottom: 10px;
-  left: 16px;
-  font-size: 11px;
-  padding: 4px 9px;
-  border-radius: 20px;
-  background: var(--card);
-  color: var(--muted-foreground);
-}
-.visual-placeholder {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  font-size: 21px;
-  color: var(--muted-foreground);
-}
+
 .street-card-body {
   padding: 20px 22px 8px;
   flex: 1;
@@ -1850,42 +1830,7 @@ p {
   flex-direction: column;
   background: var(--map-surface);
 }
-.map-preview,
-.map-loading {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  min-height: 440px;
-  padding: 32px;
-  text-align: center;
-  background: repeating-linear-gradient(
-    35deg,
-    transparent 0 64px,
-    var(--map-road) 65px 67px,
-    transparent 68px 110px
-  );
-}
-.map-preview > svg {
-  color: var(--primary);
-  margin-bottom: 18px;
-}
-.map-preview h3 {
-  font-size: 27px;
-}
-.map-preview p {
-  font-size: 15px;
-  max-width: 320px;
-  margin-top: 12px;
-  color: var(--foreground);
-}
-.map-preview small {
-  display: block;
-  margin-top: 12px;
-  color: var(--foreground);
-  font-size: 12px;
-}
+
 .map-load-button {
   display: inline-flex;
   align-items: center;
@@ -2028,19 +1973,12 @@ p {
   .explorer-list {
     max-height: 230px;
   }
-  .map-preview,
-  .map-loading,
-  .map-canvas,
-  .leaflet-street-map {
-    min-height: 320px;
-  }
+
   .map-canvas {
     height: 320px;
     flex: none;
   }
-  .map-preview {
-    padding: 24px;
-  }
+
   .detail-street-visual .street-visual {
     height: 170px;
   }
@@ -2114,4 +2052,100 @@ p {
 .map-canvas .street-pin.selected {
   background: var(--primary);
   color: var(--primary-foreground);
+}
+/* Real tile map: status messages never masquerade as geographic backgrounds. */
+.map-loading,
+.map-unavailable {
+  background: var(--muted);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  text-align: center;
+}
+.map-unavailable h3 {
+  font-size: 23px;
+}
+.map-unavailable p {
+  max-width: 350px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+.map-tile-status {
+  position: absolute;
+  bottom: 40px;
+  left: 12px;
+  right: 12px;
+  z-index: 500;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  max-width: 440px;
+  box-shadow: 0 2px 12px #0002;
+  font-size: 13px;
+}
+.map-tile-status button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 6px;
+  font-weight: 600;
+  color: var(--primary);
+}
+.map-canvas .leaflet-control-attribution {
+  background: #ffffffed;
+  color: #171717;
+  max-width: 100%;
+  font-size: 11px;
+}
+.map-canvas .leaflet-control-attribution a {
+  color: #174b67;
+}
+.map-canvas .leaflet-marker-icon {
+  --primary: #b34220;
+  --primary-foreground: #fffdf9;
+  --card: #fffdf9;
+}
+@media (max-width: 767px) {
+  .map-loading,
+  .map-unavailable {
+    min-height: 320px;
+  }
+  .map-tile-status {
+    bottom: 46px;
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+.street-identity {
+  background: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 22px;
+}
+.street-identity > svg {
+  color: var(--primary);
+}
+.street-identity strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.street-identity small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-top: 6px;
+}
+.map-canvas .leaflet-street-map {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  min-height: 0;
 }

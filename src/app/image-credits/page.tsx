@@ -44,7 +44,9 @@ export default function ImageCredits() {
             Open Database License
           </a>
           . Map points represent shopping streets, not exact shop entrances.
-          Category associations remain preliminary.
+          Category associations remain preliminary. Local map tiles are provided
+          by OpenStreetMap Standard. Public deployments may use CARTO Basemaps;
+          the active provider attribution is displayed on the map.
         </p>
       </section>
       <section className="detail-panel">

@@ -44,3 +44,7 @@ Authoritative status is `data/manifests/sources.json`; see [data-pipeline.md](da
 | Shop-owner / licensed CSV/JSON | Per manifest entry                      | Shop records                              | Per manifest | Must be added as APPROVED with evidence | `pnpm data:import:file`                                                             | Per manifest                 | —                                    |
 
 Pilot run 11 Oct 2026 (UTC): one Overpass query returned 33 `shop=*` elements in the study area (OSM base 2026-10-11T19:01:35Z). 27 named candidates are held locally for review; none are reviewed, verified or published. The committed fixture `data/fixtures/overpass-pettah.json` is synthetic (TEST FIXTURE names, fake IDs) and not OSM data.
+
+## Real tile-map update (12 October 2026)
+
+The earlier local-vector/no-tile map description is superseded by the real raster implementation. The OSM road snapshot now supplies only validated selected-street geometry; card illustrations were removed in favour of non-map neighbourhood identity. Existing source locations now retain their exact node IDs and representative precision. Local viewing uses OSM Standard tiles with attribution/native caching; public production uses configured CARTO Basemaps with its public key and attribution. See [map-implementation.md](map-implementation.md) for current provider terms, configuration, provenance and verified tile responses. No business records or category associations were changed.

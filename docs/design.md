@@ -18,9 +18,7 @@ Warm paper (`#faf9f6`), ink (`#171717`), white surfaces and a contrast-safe terr
 
 ## Interactive mapping
 
-`StreetExplorer` provides accessible category and street controls, a selected details panel, directions and lazy map activation. `StreetMap` is a client-only dynamic React Leaflet component. It renders a local ODbL road snapshot, needs no provider key, sends no tile/geolocation requests and keeps map attribution visible. Coordinates are source-backed representative street points; stored valid database coordinates take precedence. Unknown streets remain discoverable without fabricated pins. Source records and limitations are in [data-sources.md](data-sources.md).
-
-The map supports marker popups, selected-road highlighting, a selected-street label and zoom controls. Desktop allows panning, while coarse-pointer devices use the street list and zoom controls; scroll-wheel zoom is disabled to prevent scroll trapping. Mobile uses a closer initial zoom to keep neighbouring targets separate. Chunk failures produce a useful retry/directions fallback.
+`StreetExplorer` preserves category/list/selection state and initializes the client-only dynamic Leaflet map on viewport entry. The map renders actual OSM-compatible raster tiles, supports desktop/mobile pan/zoom and marker/list synchronization, and includes visible attribution. Local viewing uses OSM Standard; public production requires a configured CARTO basemap key. Loading, configuration and tile failure/retry states preserve accessible street directions. Card visuals are lightweight non-map neighbourhood surfaces pending verified photographs. Source-backed selected road geometry is an overlay, not a basemap substitute. Full configuration, policy, provenance and verification details are in [map-implementation.md](map-implementation.md).
 
 ## Responsive and accessible behaviour
 

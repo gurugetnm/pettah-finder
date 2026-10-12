@@ -33,7 +33,7 @@
       "name": "peta.lk",
       "url": "https://peta.lk/",
       "type": "directory",
-      "license": "",
+      "license": "All rights reserved (1xtec)",
       "permissionStatus": "PERMISSION_REQUIRED",
       "permissionEvidence": "",
       "attribution": "",
@@ -42,14 +42,14 @@
       "allowedFields": [],
       "publicationPermitted": false,
       "automatedCollection": false,
-      "notes": "Terms of service, database rights and republication permission not yet reviewed. No adapter is active; do not fetch."
+      "notes": "Reviewed 2026-10-12. Terms (https://peta.lk/terms, updated May 2025) s.5: content is property of 1xtec and may not be copied, reproduced or used without written permission. No API or data download. robots.txt allows public pages (not a license). Has a Colombo Market/Pettah shop section. Request sent? No: draft in docs/permission-requests.md (support@peta.lk). Do not fetch until written permission is recorded in permissionEvidence."
     },
     {
       "id": "pettahhub-lk",
       "name": "Pettah Hub",
       "url": "https://www.pettahhub.lk/",
       "type": "directory",
-      "license": "",
+      "license": "All rights reserved (SLT Digital Services / Rainbowpages)",
       "permissionStatus": "PERMISSION_REQUIRED",
       "permissionEvidence": "",
       "attribution": "",
@@ -58,7 +58,7 @@
       "allowedFields": [],
       "publicationPermitted": false,
       "automatedCollection": false,
-      "notes": "Terms of service, database rights and republication permission not yet reviewed. No adapter is active; do not fetch."
+      "notes": "Reviewed 2026-10-12. Operated by SLT Digital Services (Sri Lanka Telecom, SLT Rainbowpages). Footer: all rights reserved. No terms of use, API or data download found. robots.txt allows all crawling (not a license). Pettah supplier directory. Draft request in docs/permission-requests.md (+94 11 2399399, contact form https://pettahhub.lk/contactus). Do not fetch until written permission is recorded in permissionEvidence."
     }
   ]
 }

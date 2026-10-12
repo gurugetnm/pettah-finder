@@ -8,20 +8,20 @@ Warm paper (`#faf9f6`), ink (`#171717`), white surfaces and a contrast-safe terr
 
 ## Discovery hierarchy
 
-- Home: split photo/search hero, native GET search, suggestion links, four featured illustrated categories, remaining categories as compact browse links, geographic street cards and a filterable map explorer.
+- Home (`/`): the map-first discovery app — a full-height real-tile map with a search/results sidebar on desktop and a bottom sheet on mobile. No marketing hero, category tiles or street-card sections. See [map-first-app.md](map-first-app.md).
 - Categories: all database categories with names/descriptions and working links to filtered streets. Original icon compositions are generic illustrations, not invented product/shop photographs.
 - Streets: real category relations, original descriptions, geographic illustrations and separate explore/directions actions. Illustrations use source road geometry rather than repeating an unrelated photograph across named streets.
 - Search: existing query parsing/aliases and result ordering retained; readable cards for streets, categories and verified shops. An explicit qualified state explains when no verified shops match.
-- Street guide: breadcrumbs, primary directions, local road illustration, categories/products, existing verified shop access, map and related streets selected from shared category relations.
+- Street guide: breadcrumbs, primary directions, a “View on map” link into the map app (`/?street=slug`), local road illustration, categories/products, existing verified shop access and related streets selected from shared category relations.
 - Shops: existing factual directory/filters/details and honest empty states retained; improved shared typography and card styling.
 - Credits: public photography source/author/license/transformations and OSM attribution linked from photo and footer.
 
 ## Interactive mapping
 
-`StreetExplorer` preserves category/list/selection state and initializes the client-only dynamic Leaflet map on viewport entry. The map renders actual OSM-compatible raster tiles, supports desktop/mobile pan/zoom and marker/list synchronization, and includes visible attribution. Local viewing uses OSM Standard; public production requires a configured CARTO basemap key. Loading, configuration and tile failure/retry states preserve accessible street directions. Card visuals are lightweight non-map neighbourhood surfaces pending verified photographs. Source-backed selected road geometry is an overlay, not a basemap substitute. Full configuration, policy, provenance and verification details are in [map-implementation.md](map-implementation.md).
+`DiscoveryApp` (home page) owns search results, category filters and selection, all kept in the URL (`q`, `category`, `street`, `shop`). It drives one client-only dynamic Leaflet `StreetMap` that renders actual OSM-compatible raster tiles, street points and source-backed street lines, verified shop markers, fit/reset controls and visible attribution. Local viewing uses OSM Standard; public production requires a configured CARTO basemap key (with a real CARTO dark basemap in dark mode). Loading, configuration and tile failure/retry states keep the result list and directions usable. Full provider, policy and provenance details are in [map-implementation.md](map-implementation.md); the app shell is described in [map-first-app.md](map-first-app.md).
 
 ## Responsive and accessible behaviour
 
-The mobile hero places search before the photograph. Four featured categories become two columns; secondary links wrap. Street grids move from three columns to two to one. The homepage shows three featured streets on mobile, with all streets available through its directory link and explorer. Lists and map stack, with a 320px map height. Controls use comfortable target sizes and inputs use 16px text. Navigation, theme disclosure, skip link and Escape focus behaviour remain supported.
+On mobile the home map fills the viewport under the header, search floats at the top and results live in a bottom sheet (collapsed, half, expanded) operable by tap, keyboard arrows or drag. Directory pages keep their grids: street cards move from three columns to two to one. Controls use comfortable target sizes and inputs use 16px text. Navigation, theme disclosure, skip link and Escape focus behaviour remain supported.
 
 Playwright checks all requested widths (320, 360, 375, 390, 430, 768px), plus 1024 and 1440px. Axe exercises both themes, including the loaded mobile map. These checks complement manual screenshot review; they are not comprehensive accessibility certification or physical-device testing.

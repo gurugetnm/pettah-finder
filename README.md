@@ -6,7 +6,7 @@ A lightweight public shopping guide for Pettah, Colombo. Search products and ali
 
 ## What works
 
-- Search-led homepage with warm light/dark themes, locally served typography, compact category tiles and street cards with direct directions.
+- Map-first homepage: a full-height Pettah map with search, category filters, street/shop selection and directions in a sidebar (desktop) or bottom sheet (mobile); light by default with a dark mode.
 - Shareable search (`/search?q=charger`) across products, aliases, categories, street names and public shop listings.
 - Category directory, filtered streets and individual street pages with related products.
 - Shop directory with product/category/street filters and public shop detail pages. Only published, verified shops appear.
@@ -76,4 +76,4 @@ The full dependency audit currently reports a development-only `braces` advisory
 
 Next: gather permissioned shop data, record its provenance and verification date, publish a small real directory, and add pagination as required. Stay focused on public discovery.
 
-Further reading: [design system](docs/design.md), [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md), [data licensing](docs/licensing.md).
+Further reading: [map-first app](docs/map-first-app.md), [design system](docs/design.md), [architecture](docs/architecture.md), [local development](docs/development.md), [testing](docs/testing.md), [scope review](docs/scope-review.md), [verification results](docs/verification.md), [data licensing](docs/licensing.md).
